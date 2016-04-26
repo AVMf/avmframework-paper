@@ -1,9 +1,13 @@
 \documentclass{llncs}
 
+% needed for algorithms
+\usepackage[ruled]{algorithm}
+\usepackage[noend]{algorithmic}
+\usepackage{amsmath}
+
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{xspace}
-
 
 \newcommand{\AVM}{Alternating Variable Method\xspace}
 \newcommand{\longname}{AVM Framework\xspace}
@@ -13,16 +17,19 @@
 \newcommand{\inlineheading}[1]{\vspace{1ex} \noindent {\bf #1.}}
 \newcommand{\codescalefactor}{0.7}
 
+% for algorithms
+\newcommand{\mf}{\mathit{mf}}
+
 \newcommand{\snippet}[1]{
-  \begin{center}
-    \scalebox{\codescalefactor}{
-      \begin{tabular}{|l|}
-      \hline
-      \input{snippets/#1}
-      \hline
-      \end{tabular}
-    }
-  \end{center}
+	\begin{center}
+		\scalebox{\codescalefactor}{
+			\begin{tabular}{|l|}
+			\hline
+			\input{snippets/#1}
+			\hline
+			\end{tabular}
+		}
+	\end{center}
 }
 
 \begin{document}
@@ -43,7 +50,99 @@ Recent developments to the AVM have generalized the type of representation it ca
 
 \section{History of the AVM}
 
+
+
+\begin{algorithm}
+	\small
+	\algsetup{linenosize=\small}
+		\caption{The outer loop of the AVM for optimizing $\vec{x} = (x_1, \dots, x_n)$ \mbox{(taken from Kempka et al. \cite{Kempka2015})}}
+	\begin{algorithmic}[1]
+		\WHILE{\textbf{true}}
+			\STATE \textbf{let} $\vec{x}:=\mathbf{random}()$
+			\STATE \textbf{let} $i:=1$, $c:=0$
+			\WHILE{$c<n$}
+				\STATE \textbf{let} $f \colon x \mapsto \mf(x_1, \dots, x_{i-1}, x, x_{i+1}, \dots, x_n)$
+				\STATE \textbf{let} $\vec{x'}:=\mathbf{local\_search}(f,x_i)$
+				 \IF{$\mf(\vec{x'})<\mf(\vec{x})$}
+					\STATE \textbf{let} $\vec{x}:=\vec{x'}$, $c:=0$
+				\ELSE
+					\STATE \textbf{let} $c:=c+1$
+				\ENDIF
+				\STATE \textbf{let} $i:= (i \bmod n) +1$
+			\ENDWHILE
+		\ENDWHILE
+	\end{algorithmic}
+	\label{alg:framework}
+\end{algorithm}
+
+\begin{algorithm}
+	\small
+	\algsetup{linenosize=\small}
+	\caption{$\text{Iterated Pattern Search, starting at }x\in D$}
+	\begin{algorithmic}[1]
+		\WHILE{$\textbf{true}$}
+			\STATE$\textbf{if }f(x-1)\geq f(x)\textbf{ and }f(x+1)\geq f(x)\textbf{ return }x$
+			\STATE$\textbf{if }f(x-1)<f(x+1)\textbf{ then let }k:=-1\textbf{ else let }k:=1$
+			\WHILE{$f(x+k)<f(x)$}
+				\STATE$\textbf{let }x:=x+k\text{, }k:=2k$
+			\ENDWHILE
+		\ENDWHILE
+	\end{algorithmic}
+	\vspace*{1mm}
+	\label{alg:one-dimensional-AVM}
+\end{algorithm}
+
 \section{Recent Improvements to the AVM}
+
+\begin{algorithm}
+	\small
+	\algsetup{linenosize=\small}
+	\caption{$\text{Geometric search, starting at }x\in D$}
+	\begin{algorithmic}[1]
+		\STATE$\textbf{if }f(x-1)\geq f(x)\textbf{ and }f(x+1)\geq f(x)\textbf{ return }x$
+		\STATE$\textbf{if }f(x-1)<f(x+1)\textbf{ then let }k:=-1\textbf{ else let }k:=1$
+		\WHILE{$f(x+k)<f(x)$}
+			\STATE$\textbf{let }x:=x+k\text{, }k:=2k$
+		\ENDWHILE
+		\STATE$\textbf{let }\ell:=\min(x-k/2,x+k)\text{, }r:=\max(x-k/2,x+k)$
+		\WHILE{$\ell<r$}
+			\IF{$f(\lfloor(\ell+r)/2\rfloor)<f(\lfloor(\ell+r)/2\rfloor+1)$}
+				\STATE$r:=\lfloor(\ell+r)/2\rfloor$
+			\ELSE
+				\STATE$\ell:=\lfloor(\ell+r)/2\rfloor+1$
+			\ENDIF
+		\ENDWHILE
+		\RETURN$\ell$
+	\end{algorithmic}
+	\vspace*{1mm}
+	\label{alg:one-dimensional-geometric}
+\end{algorithm}
+
+
+\begin{algorithm}
+	\small
+	\algsetup{linenosize=\small}
+	\caption{$\text{Lattice search, starting at }x\in D$}
+	\begin{algorithmic}[1]
+		\STATE$\textbf{if }f(x-1)\geq f(x)\textbf{ and }f(x+1)\geq f(x)\textbf{ return }x$
+		\STATE$\textbf{if }f(x-1)<f(x+1)\textbf{ then let }k:=-1\textbf{ else let }k:=1$
+		\WHILE{$f(x+k)<f(x)$}
+			\STATE$\textbf{let }x:=x+k\text{, }k:=2k$
+		\ENDWHILE
+		\STATE$\textbf{let }\ell:=\min(x-k/2,x+k)\text{, }r:=\max(x-k/2,x+k)$
+		\STATE$\textbf{let }n:=\min\{n\mid F_{n}\geq r-l+2\}$
+		\WHILE{$n>3$}
+			\IF{$\ell+F_{n-1}-1\leq r\textbf{ and }f(\ell+F_{n-2}-1)\geq f(\ell+F_{n-1}-1)$}
+				\STATE$\textbf{let }\ell:=\ell+F_{n-2}$
+			\ENDIF
+			\STATE$\textbf{let }n:=n-1$
+		\ENDWHILE
+		\RETURN$\ell$
+	\end{algorithmic}
+	\vspace*{1mm}
+	\label{alg:one-dimensional-lattice}
+\end{algorithm}
+
 
 \section{The \longname (\name)}
 The \longname (\name) is an object-oriented framework and Java implementation of the AVM and its enhancements since the original version proposed by Korel.  The framework has been implemented to make the core algorithms behind the AVM and its use as clear as possible, closely matching paper definitions supplied in Figures~\ref{} (i.e., through the use of similar variable names and decision structures etc.) while adhering to good principles of object-oriented design.
@@ -95,9 +194,14 @@ Re-running the search from a different starting point may lead to the other root
 % \inlineheading{Automated Bug-Fixing}
 
 \section{Conclusions}
+This paper introduced \name, an open source implementation of the AVM and framework for its use in SBSE projects.
 
 %% Commented out for double blind review
 %\inlineheading{Acknowledgment}
 %We thank Joseph Kempka for an initial implementation of Geometric and Lattice search that we used to test our own version against.
+
+\section*{References}
+\bibliographystyle{splncs03}
+\bibliography{refs}
 
 \end{document}
