@@ -34,28 +34,63 @@
 
 \begin{document}
 
-\title{\name ~--- An Open Source Framework and Implementation for use of the \\ \AVM}
-\author{Suppressed for double-blind review}
+\title{\name: An\:Open-Source\:Framework\:and\\$\!$Implementation\:of\:the\:Alternating\:Variable\:Method\vspace{-.5em}}
+
+%\author{Phil McMinn\inst{1} \and Gregory M. Kapfhammer\inst{2} \and Dirk Sudholt\inst{1} \and Sonal Mahajan\inst{3} \and William G.J. Halfond\inst{3}}
+
+%\institute{University of Sheffield, UK \and Allegheny College, USA \and University of Southern California, USA}
+
+% aim: get author block to fit in this space (or less)
+\author{
+	Suppressed\\
+	for\\
+	\vspace{1mm} \small{double-blind review}
+	\vspace{-2em}
+}
+\institute{}
 
 \maketitle
 
 \begin{abstract}
 The \AVM (AVM) has been shown to be a particularly fast and effective local search technique in search-based software engineering. %, particularly test data generation.
 %
-Recent developments to the AVM have generalized the type of representation it can optimize, while others have provably improved its runtime for certain types of fitness landscape. However, there has been no publicly-available code implementation of these algorithms. We introduce \name, a  fully object-oriented framework, written in Java, that provides such an implementation. \name is ready for download and configuration for use in SBSE projects.
+Recent developments to the AVM have generalized the types of representations it can optimize and have provably improved its runtime for certain types of fitness landscape. Until now, however, there has been no publicly-available code implementation of these algorithms. We introduce \name, an object-oriented Java framework that provides such an implementation. \name is ready for download and configuration for use in SBSE projects.
 
 \end{abstract}
 
 \section{Introduction}
 
-\section{History of the AVM}
+\vspace{-.5ex}
+The {\it \AVM} (AVM) was first proposed for search-based software engineering by Korel in 1990~\cite{Korel1990} as an adaptation of so-called ``direct'' search methods \cite{Gill1974,Glass1965} for the generation of software test data.
+% The AVM is an adaptation of so-called direct search methods \cite{Gill1974,Glass1965} to the test data generation problem.
+% In particular, the AVM that did not make assumptions about the branching constraints of the program --- for example, their linearity and continuity.
+Despite the application of supposedly more robust, global search techniques to test data generation (e.g., Genetic Algorithms), the AVM has stood the test of time. In 2007, Harman and McMinn~\cite{Harman2007} reported its effectiveness and efficiency for a series of C programs, and combined it with a GA to provide a ``best of'' Memetic Algorithm approach~\cite{Harman2010}. It has since been used to generate test suites for Java programs~
+\cite{%Fraser2013,
+Fraser2015b}, having been implemented into the {\sc EvoSuite} tool, generate rows of data for testing databases~\cite{Kapfhammer2013,McMinn2015} with the {\it SchemaAnalyst} tool, and has been combined with dynamic symbolic approaches in Microsoft's Pex tool \cite{Lakhotia2010}.
+It has also been applied to problems outside of test data generation, for example test case selection~\cite{Pradhan2016}.
 
+Since its initial application, various different extensions have been made to the algorithm in terms of the types of variables it can handle (namely floating-point types~\cite{Harman2007} and strings~\cite{McMinn2015}), along with the incorporation of different strategies that are proven to speed up the search for certain common types of objective function landscape
+\cite{%Kempka2013,
+Kempka2015}.
 
+The AVM is therefore capable of handling a variety of search representations and locating solutions to SBSE problems in a very efficient manner. Nevertheless, to incorporate it into an SBSE project, an SBSE researcher has previously had to understand the different variants of algorithm and then produce a faithful implementation --- a potentially time-consuming and error prone task. To address this problem, we have developed \name, an open source object-oriented framework that implements variants of the AVM and its representations, and is available for download and instant deployment in SBSE projects. \name~is fully documented and comes with a series of examples as to its usage.
+
+%This paper is organized as follows: first we introduce the basic form of the AVM, as originally proposed by Korel~\cite{Korel1990} (Section~\ref{sec:basic}). We then survey some of the improvements subsequently made (Section~\ref{sec:improvements}). Section~\ref{sec:avmf} then introduces \name, our AVM framework, describing how it is implemented and how it is intended to be used. Finally, Section~\ref{sec:conclusions} concludes with proposals as to future projects to which the framework could be applied.
+
+Before introducing the framework, we briefly review the basic form of the AVM algorithm and some of the prior extensions to the algorithm.
+
+\section{The Basic Form of the AVM}
+\label{sec:basic}
+
+% something about how the algorithm starts, randomly or with initial values?
+
+The original AVM used by Korel~\cite{Korel1990} takes a vector $\vec{x} = (x_1, \dots, x_n)$, and cycles through each element of the vector one by one as shown by Algorithm~\ref{basic}, invoking a specific local search to improve each one in turn. The local search of the original AVM, referred to as ``Iterated Pattern Search'' (IPS), is shown in Algorithm~\ref{alg:ips}. The initial part of the search corresponds to so-called {\it exploratory} moves. A small increment is made to the variable followed by a small decrement. If either of the moves yields an improvement in the objective value for the complete value, a positive or negative ``direction'' has been established. IPS seeks to make further moves in the direction, referred to as {\it pattern} moves. Consecutive pattern moves double in size, so long as the previous move improved the objective value. In this manner, IPS gets closer and closer to the target value until it likely ``overshoots'' the target, due to a pattern move that was larger than the difference between the current position and the goal value. When this occurs, IPS reestablishes a new direction with two more exploratory moves. If neither move leads to an improvement in objective value, the local search terminates and hands back control the main loop.
 
 \begin{algorithm}
 	\small
 	\algsetup{linenosize=\small}
-		\caption{The outer loop of the AVM for optimizing $\vec{x} = (x_1, \dots, x_n)$ \mbox{(taken from Kempka et al. \cite{Kempka2015})}}
+		\caption{The main loop of the AVM for optimizing $\vec{x} = (x_1, \dots, x_n)$ % \mbox{(taken from Kempka et al. \cite{Kempka2015})}
+		}
 	\begin{algorithmic}[1]
 		\WHILE{\textbf{true}}
 			\STATE \textbf{let} $\vec{x}:=\mathbf{random}()$
@@ -72,8 +107,12 @@ Recent developments to the AVM have generalized the type of representation it ca
 			\ENDWHILE
 		\ENDWHILE
 	\end{algorithmic}
-	\label{alg:framework}
+	\label{alg:basic}
 \end{algorithm}
+
+If a complete cycle of the vector occurs without any improvement in the objective function, the search has hit a local optimum, at which point it restarts by randomizing the vector.
+
+This continues until resources are exhausted (e.g., a maximum number of objective function evaluations or restarts is reached, or a time limit has expired), or the optimal target vector is discovered. (For simplicity, these termination criteria are not included as part of the algorithm definitions.)
 
 \begin{algorithm}
 	\small
@@ -89,10 +128,17 @@ Recent developments to the AVM have generalized the type of representation it ca
 		\ENDWHILE
 	\end{algorithmic}
 	\vspace*{1mm}
-	\label{alg:one-dimensional-AVM}
+	\label{alg:ips}
 \end{algorithm}
 
-\section{Recent Improvements to the AVM}
+\section{Improvements to the AVM}
+\label{sec:improvements}
+
+\inlineheading{Representations}
+The original AVM was only demonstrated for integer variables. Harman and McMinn~\cite{Harman2007} extended this definition by allowing each variable to have a precision setting $p$, allowing floating-point values to be handled. Exploratory moves then consisted of the smallest value of the variable according to $p$ (i.e., $10^{-p}$). McMinn et al.~\cite{McMinn2015} allowed string variables to be represented by the approach. A string variable is essentially a sub-vector, whose elements are characters that are individually manipulated by the local search routine. The length of this sub-vector is allowed to vary through a special sequence of moves that increase and decrease its size, allowing for the optimization of variable-length strings.
+
+\inlineheading{Algorithms}
+Kempka et al.~\cite{Kempka2015} proposed two new local searches for the AVM, and proved that are more efficient in unimodal landscapes. The first, ``Geometric'' search is shown by Algorithm~\ref{alg:geometric}. Geometric search performs exploratory moves followed by pattern moves, if a direction of improvement can be established. Following pattern moves, it does not return to exploratory moves, but instead ``brackets'' the upper and lower limits in which the local optima must lie, and performs a binary search.
 
 \begin{algorithm}
 	\small
@@ -115,9 +161,10 @@ Recent developments to the AVM have generalized the type of representation it ca
 		\RETURN$\ell$
 	\end{algorithmic}
 	\vspace*{1mm}
-	\label{alg:one-dimensional-geometric}
+	\label{alg:geometric}
 \end{algorithm}
 
+Kempka et al.~\cite{Kempka2015} also proposed ``Lattice'' search, which is shown to be even faster than Geometric search. Lattice search is similar to Geometric search, except that after bracketing the position of the local optimum, converges on the target values using Fibonacci numbers, as shown by Algorithm~\ref{alg:lattice}.
 
 \begin{algorithm}
 	\small
@@ -140,12 +187,14 @@ Recent developments to the AVM have generalized the type of representation it ca
 		\RETURN$\ell$
 	\end{algorithmic}
 	\vspace*{1mm}
-	\label{alg:one-dimensional-lattice}
+	\label{alg:lattice}
 \end{algorithm}
 
 
+
 \section{The \longname (\name)}
-The \longname (\name) is an object-oriented framework and Java implementation of the AVM and its enhancements since the original version proposed by Korel.  The framework has been implemented to make the core algorithms behind the AVM and its use as clear as possible, closely matching paper definitions supplied in Figures~\ref{} (i.e., through the use of similar variable names and decision structures etc.) while adhering to good principles of object-oriented design.
+\label{sec:avmf}
+The \longname (\name) is an object-oriented framework and Java implementation of the AVM and its enhancements since the original version proposed by Korel.  The framework has been implemented to make the core algorithms behind the AVM and its use as clear as possible, closely matching paper definitions supplied in Algorithms~\ref{alg:basic}--\ref{alg:lattice} (i.e., through the use of similar variable names and decision structures etc.) while adhering to good principles of object-oriented design.
 
 It is publicly available for download at \repourl (a GitHub-hosted Git repository) for inclusion in SBSE projects, where the AVM may be the core search algorithm or be a component of a more complex one (e.g., a memetic algorithm) to which calls to the framework are made. Or, the code can simply be lifted from the repository and re-used and adapted as researchers see fit.
 
@@ -185,22 +234,24 @@ The following is the output of the search process, showing how the AVM search co
 
 Re-running the search from a different starting point may lead to the other root, $-1$, being found.
 
-\section{Potential Further Uses of the AVM in Search-Based Software Engineering}
+\section{Conclusions}
+\label{sec:conclusions}
+This paper introduced \name, an open source implementation of the AVM and framework for its use in SBSE projects. Possible future applications of the AVM include the following:
 
 \inlineheading{Automatically Generating Readable Test Data}
+Generating {\it readable} test cases that humans can easily understand has been of interest to researchers in search-based testing of late (e.g., rewarding inputs that obtain a high score from a language model \cite{Afshan2013}). Given that the AVM is local search, the technique could be used to start with examples of human generated inputs and adapt them to new coverage targets without necessarily losing the qualities of the original data.
 
-\inlineheading{Automatically Finding Optimal Software Configurations}
+\inlineheading{Automatically Determining Optimal Software Configuration Values}
+Highly configurable pieces of software, such as the GCC compiler, that may be tunable through search techniques such as the AVM. In large spaces of parameters, the AVM is well suited to quickly discovering which particular variables are relevant to the problem through its exploratory move phase, and then proceeding to determining their optimal values. Again, as a local search technique, the AVM is also well suited to taking an existing known-good human solution and improving upon it.
 
-% \inlineheading{Automated Bug-Fixing}
-
-\section{Conclusions}
-This paper introduced \name, an open source implementation of the AVM and framework for its use in SBSE projects.
+\inlineheading{Automated Bug-Fixing}
+Bugs can occur as a result of errors when programming constants and settings files, and as such the AVM could be used as a technique for searching for appropriate values that could potentially form the basis of a ``fix''. Through its exploratory move phase, the AVM is well-suited to quickly determining which constants are ``relevant'' to the fix, by performing a quick sweep of small changes through the values involved, and seeing how the resulting fitness values are affected.
 
 %% Commented out for double blind review
 %\inlineheading{Acknowledgment}
 %We thank Joseph Kempka for an initial implementation of Geometric and Lattice search that we used to test our own version against.
 
-\section*{References}
+% References
 \bibliographystyle{splncs03}
 \bibliography{refs}
 
