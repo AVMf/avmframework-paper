@@ -77,7 +77,7 @@ The AVM is therefore capable of handling a variety of search representations and
 
 %This paper is organized as follows: first we introduce the basic form of the AVM, as originally proposed by Korel~\cite{Korel1990} (Section~\ref{sec:basic}). We then survey some of the improvements subsequently made (Section~\ref{sec:improvements}). Section~\ref{sec:avmf} then introduces \name, our AVM framework, describing how it is implemented and how it is intended to be used. Finally, Section~\ref{sec:conclusions} concludes with proposals as to future projects to which the framework could be applied.
 
-Before introducing the framework, we briefly review the basic form of the AVM algorithm and some of the prior extensions to the algorithm.
+% Before introducing \name, we briefly review the basic form of the AVM algorithm and recent extensions.
 
 \section{The Basic Form of the AVM}
 \label{sec:basic}
@@ -86,7 +86,7 @@ Before introducing the framework, we briefly review the basic form of the AVM al
 
 The original AVM used by Korel~\cite{Korel1990} takes a vector $\vec{x} = (x_1, \dots, x_n)$, and cycles through each element of the vector one by one as shown by Algorithm~\ref{basic}, invoking a specific local search to improve each one in turn. The local search of the original AVM, referred to as ``Iterated Pattern Search'' (IPS), is shown in Algorithm~\ref{alg:ips}. The initial part of the search corresponds to so-called {\it exploratory} moves. A small increment is made to the variable followed by a small decrement. If either of the moves yields an improvement in the objective value for the complete value, a positive or negative ``direction'' has been established. IPS seeks to make further moves in the direction, referred to as {\it pattern} moves. Consecutive pattern moves double in size, so long as the previous move improved the objective value. In this manner, IPS gets closer and closer to the target value until it likely ``overshoots'' the target, due to a pattern move that was larger than the difference between the current position and the goal value. When this occurs, IPS reestablishes a new direction with two more exploratory moves. If neither move leads to an improvement in objective value, the local search terminates and hands back control the main loop.
 
-\begin{algorithm}
+\begin{algorithm}[b]
 	\small
 	\algsetup{linenosize=\small}
 		\caption{The main loop of the AVM for optimizing $\vec{x} = (x_1, \dots, x_n)$ % \mbox{(taken from Kempka et al. \cite{Kempka2015})}
@@ -110,13 +110,9 @@ The original AVM used by Korel~\cite{Korel1990} takes a vector $\vec{x} = (x_1, 
 	\label{alg:basic}
 \end{algorithm}
 
-If a complete cycle of the vector occurs without any improvement in the objective function, the search has hit a local optimum, at which point it restarts by randomizing the vector.
-
-This continues until resources are exhausted (e.g., a maximum number of objective function evaluations or restarts is reached, or a time limit has expired), or the optimal target vector is discovered. (For simplicity, these termination criteria are not included as part of the algorithm definitions.)
-
-\begin{algorithm}
-	\small
-	\algsetup{linenosize=\small}
+\begin{algorithm}[b]
+	\footnotesize
+	\algsetup{linenosize=\scriptsize}
 	\caption{$\text{Iterated Pattern Search, starting at }x\in D$}
 	\begin{algorithmic}[1]
 		\WHILE{$\textbf{true}$}
@@ -127,9 +123,14 @@ This continues until resources are exhausted (e.g., a maximum number of objectiv
 			\ENDWHILE
 		\ENDWHILE
 	\end{algorithmic}
-	\vspace*{1mm}
 	\label{alg:ips}
 \end{algorithm}
+
+If a complete cycle of the vector occurs without any improvement in the objective function, the search has hit a local optimum, at which point it restarts by randomizing the vector.
+
+This continues until resources are exhausted (e.g., a maximum number of objective function evaluations or restarts is reached, or a time limit has expired), or the optimal target vector is discovered. (For simplicity, these termination criteria are not included as part of the algorithm definitions.)
+
+
 
 \section{Improvements to the AVM}
 \label{sec:improvements}
@@ -140,9 +141,11 @@ The original AVM was only demonstrated for integer variables. Harman and McMinn~
 \inlineheading{Algorithms}
 Kempka et al.~\cite{Kempka2015} proposed two new local searches for the AVM, and proved that are more efficient in unimodal landscapes. The first, ``Geometric'' search is shown by Algorithm~\ref{alg:geometric}. Geometric search performs exploratory moves followed by pattern moves, if a direction of improvement can be established. Following pattern moves, it does not return to exploratory moves, but instead ``brackets'' the upper and lower limits in which the local optima must lie, and performs a binary search.
 
-\begin{algorithm}
-	\small
-	\algsetup{linenosize=\small}
+Kempka et al.~\cite{Kempka2015} also proposed ``Lattice'' search, which is shown to be even faster than Geometric search. Lattice search is similar to Geometric search, except that after bracketing the position of the local optimum, converges on the target values using Fibonacci numbers, as shown by Algorithm~\ref{alg:lattice}.
+
+\begin{algorithm}[t]
+	\footnotesize
+	\algsetup{linenosize=\scriptsize}
 	\caption{$\text{Geometric search, starting at }x\in D$}
 	\begin{algorithmic}[1]
 		\STATE$\textbf{if }f(x-1)\geq f(x)\textbf{ and }f(x+1)\geq f(x)\textbf{ return }x$
@@ -164,11 +167,9 @@ Kempka et al.~\cite{Kempka2015} proposed two new local searches for the AVM, and
 	\label{alg:geometric}
 \end{algorithm}
 
-Kempka et al.~\cite{Kempka2015} also proposed ``Lattice'' search, which is shown to be even faster than Geometric search. Lattice search is similar to Geometric search, except that after bracketing the position of the local optimum, converges on the target values using Fibonacci numbers, as shown by Algorithm~\ref{alg:lattice}.
-
-\begin{algorithm}
-	\small
-	\algsetup{linenosize=\small}
+\begin{algorithm}[t]
+	\footnotesize
+	\algsetup{linenosize=\scriptsize}
 	\caption{$\text{Lattice search, starting at }x\in D$}
 	\begin{algorithmic}[1]
 		\STATE$\textbf{if }f(x-1)\geq f(x)\textbf{ and }f(x+1)\geq f(x)\textbf{ return }x$
