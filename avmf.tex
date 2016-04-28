@@ -19,9 +19,10 @@
 \newcommand{\name}{AVM\hspace{-1pt}$f$\xspace}
 \newcommand{\repourl}{\url{https://github.com/AVMf/avmf}\xspace}
 \newcommand{\gitclone}{{\tt git clone https://github.com/AVMf/avmf.git}\xspace}
-\newcommand{\inlineheading}[1]{\vspace{1ex} \noindent {\bf #1.}}
+\newcommand{\inlineheading}[1]{\vspace{1mm} \noindent {\bf #1.}}
 \newcommand{\codescalefactor}{0.7}
 \newcommand{\snippet}[1]{
+	\vspace{-1ex}
 	\begin{center}
 		\scalebox{\codescalefactor}{
 			\begin{tabular}{|l|}
@@ -31,6 +32,7 @@
 			\end{tabular}
 		}
 	\end{center}
+	\vspace{-1ex}
 }
 \newcommand{\ips}{IPS}
 \newcommand{\gs}{GS}
@@ -73,10 +75,12 @@ Recent developments to the AVM have generalized the types of representations it 
 \section{Introduction}
 
 \vspace{-.5ex}
-The {\it \AVM} (AVM) was first proposed for search-based software engineering by Korel in 1990~\cite{Korel1990} as an adaptation of so-called ``direct'' search methods \cite{Gill1974,Glass1965} for the generation of software test data.
+The {\it \AVM} (AVM) was first proposed for search-based software engineering by Korel in 1990~\cite{Korel1990}
+%as an adaptation of so-called ``direct'' search methods \cite{Gill1974,Glass1965}
+for the generation of software test data.
 % The AVM is an adaptation of so-called direct search methods \cite{Gill1974,Glass1965} to the test data generation problem.
 % In particular, the AVM that did not make assumptions about the branching constraints of the program --- for example, their linearity and continuity.
-Despite the application of supposedly more robust, global search techniques to test data generation (e.g., Genetic Algorithms), the AVM has stood the test of time. In 2007, Harman and McMinn~\cite{Harman2007} reported its effectiveness and efficiency for a series of C programs, and combined it with a GA to provide a ``best of'' Memetic Algorithm approach~\cite{Harman2010}. It has since been used to generate test suites for Java programs~
+Despite the application of supposedly more robust, global search techniques to this problem (e.g., Genetic Algorithms), the AVM has stood the test of time. In 2007, Harman and McMinn~\cite{Harman2007} reported its effectiveness and efficiency for a series of C programs, and combined it with a GA to provide a ``best of'' Memetic Algorithm approach~\cite{Harman2010}. It has since been used to generate test suites for Java programs~
 \cite{%Fraser2013,
 Fraser2015b}, having been implemented into the {\sc EvoSuite} tool, generate rows of data for testing databases~\cite{Kapfhammer2013,McMinn2015} with the {\it SchemaAnalyst} tool, and has been combined with dynamic symbolic approaches in Microsoft's Pex tool \cite{Lakhotia2010}.
 It has also been applied to problems outside of test data generation, for example test case selection~\cite{Pradhan2016}.
@@ -136,7 +140,10 @@ The AVM continues until resources are exhausted (e.g., a maximum number of objec
 \vspace{-1em}
 \pagerule
 \vspace{-1em}
-\caption{\label{fig:alg}IPS, LS, GS search algorithms for the AVM for a variable $x \in D$. $obj(x)$ denotes the problem-specific objective function, which is computed for the complete vector $\vec{x}$ currently being optimized by the AVM, where $\vec{x}_i := x, 0 \leq i \leq len$. Each line is annotated to show to which particular algorithm(s) it belongs.}
+\caption{\label{fig:alg}IPS, LS, GS search algorithms for the AVM for a variable $x \in D$. $obj(x)$
+%denotes the problem-specific
+is the objective function, %which is
+computed for the complete vector $\vec{x}$ currently being optimized by the AVM, where $\vec{x}_i := x, 0 \leq i \leq len$. $F$ is the Fibonacci sequence starting from $F_0\,=\,0$. Each line is annotated to show the algorithm(s) to which it belongs.}
 \vspace{-1.5em}
 \end{figure}
 
@@ -146,50 +153,57 @@ The original AVM was only demonstrated for integer variables. Harman and McMinn~
 \inlineheading{New Variable Search Algorithms}
 Kempka et al.~\cite{Kempka2015} proposed two new local searches for the AVM, and proved that are more efficient for unimodal objective function landscapes. ``Geometric Search'' (GS) is shown by lines 2--6, 8--15 and 23 of Figure~\ref{fig:alg}. Like IPS, GS starts by performing exploratory moves followed by pattern moves, if a direction of improvement can be established. Unlike IPS it does not iterate after overshooting the optimum. Instead it uses past moves to  ``brackets'' the upper and lower limits in which the local optima must lie, and performs a binary search (lines 8--15).
 
-Kempka et al.~\cite{Kempka2015} further proposed ``Lattice Search'' (LS), and showed that it is even more efficient than GS, provided the objection function landscape is, again, unimodal. LS (lines 2--6, 8 and 16--23 of Figure~\ref{fig:alg}) is similar to GS, except that after bracketing the location of the optimum, it converges on it by make moves that increase the value of $\vec{x}$ using Fibonacci numbers, provided by the sequence $F$.
+Kempka et al.~\cite{Kempka2015} further proposed ``Lattice Search'' (LS), and showed that it is even more efficient than GS, provided the objection function landscape is, again, unimodal. LS (lines 2--6, 8 and 16--23 of Figure~\ref{fig:alg}) is similar to GS, except that after bracketing the location of the optimum, it converges upon it through moves that increase the value of $\vec{x}$ using Fibonacci numbers.
 
 
 \section{The \longname (\name)}
 \label{sec:avmf}
-The \longname (\name) is an object-oriented framework and Java implementation of the AVM and its enhancements since the original version proposed by Korel.  The framework has been implemented to make the core algorithms behind the AVM and its use as clear as possible, closely matching the algorithmic definitions supplied by Figure~\ref{fig:alg} (i.e., through the use of similar variable names and decision structures etc.) while adhering to good principles of object-oriented design.
+The \longname (\name) implements the AVM algorithm and subsequent enhancements since the original version proposed by Korel. The framework has been implemented with the aim of making the core algorithms as clear as possible, closely matching the algorithmic definitions of Figure~\ref{fig:alg}, while adhering to good principles of object-oriented design.
 
-It is publicly available for download at \repourl (a GitHub-hosted Git repository) for inclusion in SBSE projects, where the AVM may be the core search algorithm or be a component of a more complex one (e.g., a memetic algorithm) to which calls to the framework are made. Or, the code can simply be lifted from the repository and re-used and adapted as researchers see fit.
+\name is publicly available in a Git repository hosted at \repourl. It is suited for inclusion in SBSE projects where the AVM may be the core search algorithm or be a component of a more complex technique (e.g., a memetic algorithm) to which calls to the framework are made. Or, the code can simply be lifted from the repository and adapted as researchers see fit.
 
-~\\
 \name provides a framework of Java classes to enable the algorithms to be easily used in SBSE projects, which we now describe in detail below. Each aspect of the framework is practically demonstrated in the source code of the examples introduced at the end of this section.
 
 \begin{sloppypar}
-\inlineheading{Configuring an AVM search} The primary class is the {\tt AVM} class in the root ({\tt org.avmframework}) package. In order to construct an {\tt AVM} instance, the developer must supply an instance of one of the local search methods; {\tt IteratedPatternSearch}, {\tt GeometricSearch} or {\tt LatticeSearch}, which reside in the {\tt localsearch} package. The developer must also construct the {\tt AVM} instance with a {\tt TerminationPolicy}, an object that decides when the AVM should terminate, for example if an optimal solution is not found. Options include a maximum number of objective function evaluations, a maximum number of restarts, or a time threshold. Finally, constructing the {\tt AVM} instance requires instances of {\tt Initializer} that decide from where the algorithm starts the search and restarts the search, be it from the default values that can be specified for each variable or from a random position ({\tt DefaultInitializer} and {\tt RandomInitializer} respectively, which reside in the {\tt initializer} package). For random values, \name uses an instance of {\tt RandomGenerator} from the {\tt org.apache.commons} library. (All the examples provided with \name, described above, use the library's implementation of the Mersenne Twister algorithm.)
+\inlineheading{Configuring an AVM search} The primary class is the {\tt AVM} class in the root ({\tt org.avmframework}) package. In order to construct an {\tt AVM} instance, the developer must supply an instance of one of the local search methods; {\tt IteratedPatternSearch}, {\tt GeometricSearch} or {\tt LatticeSearch}, which reside in the {\tt localsearch} package. The developer must also construct the {\tt AVM} instance with a {\tt TerminationPolicy}, an object that decides when the AVM should terminate, for example if an optimal solution is not found. Options include a maximum number of objective function evaluations, a maximum number of restarts, or a time threshold. Finally, constructing the {\tt AVM} instance requires instances of {\tt Initializer} that decide from where the algorithm starts the search and restarts the search, be it from the default values that can be specified for each variable or from a random position ({\tt DefaultInitializer} and {\tt RandomInitializer} respectively, which reside in the {\tt initializer} package). For random values, \name uses an instance of {\tt RandomGenerator} from the {\tt org.apache.commons} library (which provides an implementation of the Mersenne Twister algorithm, for example).
+%(The examples provided with \name use the library's implementation of the Mersenne Twister algorithm.)
 \end{sloppypar}
 
 \begin{sloppypar}
-In order to initiate a search process, the {\tt search} method of the {\tt AVM} instance must be invoked with an instance of a {\tt Vector} class and an {\tt ObjectiveFunction} respectively. The {\tt Vector} class describes the {\it representation} of the problem to the AVM, that is, the series of variables to be optimized; while the {\tt ObjectiveFunction} class describes how instances of those vectors should be rewarded. We now describe these aspects in further detail.
+In order to initiate a search process, the {\tt search} method of the {\tt AVM} instance must be invoked with an instance of a {\tt Vector} class and an {\tt ObjectiveFunction} respectively. The {\tt Vector} class describes the {\it representation} of the problem,
+%to the AVM,
+(i.e., the series of variables to be optimized), while the {\tt ObjectiveFunction} class describes how instances of those vectors should be evaluated by the search.
+%We now describe these aspects in further detail.
 \end{sloppypar}
 
 \begin{sloppypar}
-\inlineheading{Representation} In order to configure the search representation, an instance of the {\tt Vector} class (in the root package) must be created, and variables added to it through the {\tt addVariable} method, which accepts an instance of a {\tt Variable}. {\tt Variable} is an abstract class, so an instance of one its concrete subclasses must be provided --- {\tt IntegerVariable}, {\tt FloatingPointVariable}, {\tt CharacterVariable} or {\tt StringVariable}. Each variable needs to be constructed with information such as its minimum or maximum value (maximum length for strings), precision in case of floating point variables, and a ``default'' initial value in the search space (e.g., the empty string or zero values). This values are used to set the variables to specific values if the {\tt DefaultInitializer} is used to start the search, as previously described.
+\inlineheading{Representation} In order to configure the search representation, an instance of the {\tt Vector} class (in the root package) must be created, and variables added to it through the {\tt addVariable} method, which accepts an instance of a {\tt Variable}. {\tt Variable} is an abstract class, so an instance of one its concrete subclasses must be provided (i.e., one of {\tt IntegerVariable}, {\tt FloatingPointVariable}, {\tt CharacterVariable} or {\tt StringVariable}). Each variable must be constructed with information such as its minimum or maximum value (maximum length for strings), precision in case of floating point variables, and a ``default'' initial value in the search space (e.g., the empty string or zero values). This values are used to set the variables to specific values if the {\tt DefaultInitializer} is used to start the search, as previously described.
 \end{sloppypar}
 
 \begin{sloppypar}
-\inlineheading{Objective Function} In contrast to the rest of the framework, which require configuring instances of existing classes, an objective function is supplied to the search process by overriding the abstract {\tt ObjectiveFunction} (of the {\tt objective} package). This involves providing an implementation of the {\tt computeObjectiveValue} method, which takes a {\tt Vector} as a parameter and returns an instance of an {\tt ObjectiveValue}. Since the AVM only needs to know whether one class has a ``better'' objective value than another, exact numerical values are not needed, and so this class only provides ``betterThan'', ``worseThan'' and ``sameAs'' methods. This is useful for when a problem involves two objectives that must be optimized, but with some precedence (e.g., the classical ``approach level'' and ``branch distance'' components of the fitness function for structural test data generation \cite{}), avoiding the need for a normalization function to combine the values. % Arcuri, Poulding GECCO reference.
+\inlineheading{Objective Function} In contrast to the rest of the framework, which require configuring instances of existing classes, an objective function is supplied to the search process by overriding the abstract {\tt ObjectiveFunction} (of the {\tt objective} package). This involves providing an implementation of the {\tt computeObjectiveValue} method, which takes a {\tt Vector} as a parameter and returns an instance of an {\tt ObjectiveValue}. Since the AVM only needs to know whether one class has a ``better'' objective value than another, exact numerical values are not needed, and so this class only provides ``{\tt betterThan}'', ``{\tt worseThan}'' and ``{\tt sameAs}'' methods.
+%This is useful for when a problem involves two objectives that must be optimized, but with some precedence (e.g., the classical ``approach level'' and ``branch distance'' components of the fitness function for structural test data generation \cite{}), avoiding the need for a normalization function to combine the values. % Arcuri, Poulding GECCO reference.
 Nevertheless, the {\tt objective} package also supplies a concrete {\tt NumericalObjectiveValue} class for returning higher-is-better or lower-is-better numerical objective values.
 \end{sloppypar}
 
 \begin{sloppypar}
-\inlineheading{Reporting} The {\tt search} method of the {\tt AVM} class returns an instance of the {\tt Monitor} class, which can be used to find out interesting statistics regarding the search. These include the best vector found by the search, its objective value, the number of objective function evaluations that took place, the number of restarts that took place, and the amount of time that the search took (in milliseconds). The {\tt Monitor} class can also report the number of {\it unique} objective function evaluations. The objective function can make optional usage of a cache that maps previously ``seen'' vectors to objective values (a feature that is turned on by default). Using this cache helps make the search process more efficient by not repeating potentially expensive objective function evaluations for vectors that have already been considered during the search.
+\inlineheading{Reporting} The {\tt search} method of the {\tt AVM} class returns an instance of the {\tt Monitor} class, which can be used to find out interesting statistics regarding the search. These include the best vector found by the search, its objective value, the number of objective function evaluations that took place, the number of restarts that took place, and the amount of time that the search took (in milliseconds). The {\tt Monitor} class can also report the number of {\it unique} objective function evaluations. The objective function can make optional usage of a cache that maps previously ``seen'' vectors to objective values, avoiding the need to perform potentially costly re-evaluations.
+% (a feature that is turned on by default).
+%Using this cache helps make the search process more efficient by not repeating potentially expensive objective function evaluations for vectors that have already been considered during the search.
 \end{sloppypar}
 
-\inlineheading{Examples} \name comes with three small examples demonstrating its use. (Instructions on how to compile and run these examples are available in the project's {\tt README.md} file.) The first, {\tt Quadratic} demonstrates the use of the AVM to solve a quadratic equation by finding one of its roots. The {\tt AllZeroes} example demonstrates the optimization of an array of integers to zero values, from arbitrary random values. Finally, {\tt String} optimizes a string value from an initially random string to the value ``{\tt \AVM}''. The examples can be configured with a command line parameter to use IPS, Geometric or Lattice search as the local search method.
+\inlineheading{Examples} \name comes with three small examples demonstrating its use. (Instructions on how to compile and run these examples are available in the project's {\tt README.md} file.) The first, {\tt Quadratic} demonstrates the use of the AVM to solve a quadratic equation by finding one of its roots. The {\tt AllZeroes} example demonstrates the optimization of an array of integers to zero values, from arbitrary random values. Finally, {\tt String} optimizes a string value from an initially random string to a specified target.
+%``{\tt \AVM}''. The examples can be configured with a command line parameter to use IPS, Geometric or Lattice search as the local search method.
 
 Each example makes use of its own problem-specific fitness function that can be seen as part of its code definition. The example below is taken from the {\tt Quadratic} class, where the constants {\tt A}, {\tt B} and {\tt C} correspond to the co-efficients of the equation (in the example {\tt A}\,{\tt =}\,{\tt 4}, {\tt B}\,{\tt =}\,{\tt 10} and {\tt C}\,{\tt =}\,{\tt 6}). The function obtains the value of {\tt x} from the (single-variable) vector, and computes the value of {\tt y}. The objective value is then assigned as the distance between {\tt y} and zero, since intuitively, the closer the value of {\tt y} to zero, the closer the search is to finding one of the roots of the equation.
 
 \snippet{objective-fn}
 
-The following is the output of the search process, showing how the AVM search correctly found one of the roots, $-1.5$:
+The following is the output of the search process, showing how the AVM search correctly found one of the roots, $-1.5$ (re-running the search from different starting positions leads to the other root, $-1$, being found):
 
 \snippet{search-output}
 
-Re-running the search from a different starting point may lead to the other root, $-1$, being found.
+
 
 \section{Conclusions}
 \label{sec:conclusions}
