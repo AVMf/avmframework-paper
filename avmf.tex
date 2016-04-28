@@ -72,9 +72,9 @@ Recent developments to the AVM have generalized the types of representations it 
 
 \end{abstract}
 
+\vspace{-1em}
 \section{Introduction}
-
-\vspace{-.5ex}
+\vspace{-1ex}
 The {\it \AVM} (AVM) was first proposed for search-based software engineering by Korel in 1990~\cite{Korel1990}
 %as an adaptation of so-called ``direct'' search methods \cite{Gill1974,Glass1965}
 for the generation of software test data.
@@ -83,9 +83,18 @@ for the generation of software test data.
 Despite the application of supposedly more robust, global search techniques to this problem (e.g., Genetic Algorithms), the AVM has stood the test of time. In 2007, Harman and McMinn~\cite{Harman2007} reported its effectiveness and efficiency for a series of C programs, and combined it with a GA to provide a ``best of'' Memetic Algorithm approach~\cite{Harman2010}. It has since been used to generate test suites for Java programs~
 \cite{%Fraser2013,
 Fraser2015b}, having been implemented into the {\sc EvoSuite} tool, generate rows of data for testing databases~\cite{Kapfhammer2013,McMinn2015} with the {\it SchemaAnalyst} tool, and has been combined with dynamic symbolic approaches in Microsoft's Pex tool \cite{Lakhotia2010}.
-It has also been applied to problems outside of test data generation, for example test case selection~\cite{Pradhan2016}.
+The AVM has since found application to problems outside of test data generation, for example
+%% SEE EMAIL FROM SHAUKAT ALI (27/04/16) FOR MORE DETAILS OF THESE:
+%
+decision ordering for engineering software product lines~\cite{Yue2016}, % T. Yue, S. Ali, H. Lu and K. Nie. Search-based Decision Ordering to Facilitate Product Line Engineering of Cyber-Physical System In Internatonal Conference on Model-Driven Engineering and Software Development., 2016.
+%
+balancing workload in requirements assignment~\cite{Yue2014}, % T. Yue and S. Ali. Applying Search Algorithms for Optimizing Stakeholders Familiarity and Balancing Workload in Requirements Assignment In ACM Genetic and Evolutionary Computation Conference (GECCO). New York, USA: ACM, 2014.
+%
+reliability-redundancy-allocation problems~\cite{Qiu2016}, % Xiang Qiu, Shaukat Ali, Tao Yue, and Li Zhang, Reliability-Redundancy-Location Allocation with Maximum Reliability and Minimum Cost Using Search Techniques, Accepted for a publication in Information and Software Technology (IST) Journal, 2016
+%
+as well as test case selection~\cite{Pradhan2016} and prioritization~\cite{Arrieta2016}. % A. ARRIETA, S. WANG, G. SAGARDUI AND L. ETXEBERRIA. Test Case Prioritization of Configurable Cyber-Physical Systems with Weight-Based Search Algorithms. In Genetic and Evolutionary Computation Conference (GECCO)., 2016.
 
-Since its initial application, various different extensions have been made to the algorithm in terms of the types of variables it can handle (namely floating-point types~\cite{Harman2007} and strings~\cite{McMinn2015}), along with the incorporation of different strategies that are proven to speed up the search for certain common types of objective function landscape
+The original AVM algorithm itself has been subject to improvements, including the ability to handle floating-point variables~\cite{Harman2007} and strings~\cite{McMinn2015}, along with the incorporation of different strategies that are proven to speed up the search for certain common types of objective function landscape
 \cite{%Kempka2013,
 Kempka2015}.
 
@@ -144,7 +153,7 @@ The AVM continues until resources are exhausted (e.g., a maximum number of objec
 %denotes the problem-specific
 is the objective function, %which is
 computed for the complete vector $\vec{x}$ currently being optimized by the AVM, where $\vec{x}_i := x, 0 \leq i \leq len$. $F$ is the Fibonacci sequence starting from $F_0\,=\,0$. Each line is annotated to show the algorithm(s) to which it belongs.}
-\vspace{-1.5em}
+\vspace{-1em}
 \end{figure}
 
 \inlineheading{New Representations}
@@ -155,12 +164,13 @@ Kempka et al.~\cite{Kempka2015} proposed two new local searches for the AVM, and
 
 Kempka et al.~\cite{Kempka2015} further proposed ``Lattice Search'' (LS), and showed that it is even more efficient than GS, provided the objection function landscape is, again, unimodal. LS (lines 2--6, 8 and 16--23 of Figure~\ref{fig:alg}) is similar to GS, except that after bracketing the location of the optimum, it converges upon it through moves that increase the value of $\vec{x}$ using Fibonacci numbers.
 
-
+\vspace{-1em}
 \section{The \longname (\name)}
+\vspace{-1ex}
 \label{sec:avmf}
 The \longname (\name) implements the AVM algorithm and subsequent enhancements since the original version proposed by Korel. The framework has been implemented with the aim of making the core algorithms as clear as possible, closely matching the algorithmic definitions of Figure~\ref{fig:alg}, while adhering to good principles of object-oriented design.
 
-\name is publicly available in a Git repository hosted at \repourl. It is suited for inclusion in SBSE projects where the AVM may be the core search algorithm or be a component of a more complex technique (e.g., a memetic algorithm) to which calls to the framework are made. Or, the code can simply be lifted from the repository and adapted as researchers see fit.
+\name is publicly available at \repourl as a Git repository. It is suited for inclusion in SBSE projects where the AVM may be the core search algorithm or be a component of a more complex technique (e.g., a memetic algorithm) to which calls to the framework are made. Or, the code can simply be lifted from the repository and adapted as researchers see fit.
 
 \name provides a framework of Java classes to enable the algorithms to be easily used in SBSE projects, which we now describe in detail below. Each aspect of the framework is practically demonstrated in the source code of the examples introduced at the end of this section.
 
@@ -181,9 +191,9 @@ In order to initiate a search process, the {\tt search} method of the {\tt AVM} 
 \end{sloppypar}
 
 \begin{sloppypar}
-\inlineheading{Objective Function} In contrast to the rest of the framework, which require configuring instances of existing classes, an objective function is supplied to the search process by overriding the abstract {\tt ObjectiveFunction} (of the {\tt objective} package). This involves providing an implementation of the {\tt computeObjectiveValue} method, which takes a {\tt Vector} as a parameter and returns an instance of an {\tt ObjectiveValue}. Since the AVM only needs to know whether one class has a ``better'' objective value than another, exact numerical values are not needed, and so this class only provides ``{\tt betterThan}'', ``{\tt worseThan}'' and ``{\tt sameAs}'' methods.
+\inlineheading{Objective Function} In contrast to the rest of the framework, which require configuring instances of existing classes, an objective function is supplied to the search process by overriding the abstract {\tt ObjectiveFunction} (of the {\tt objective} package). This involves providing an implementation of the {\tt computeObjectiveValue} method, which takes a {\tt Vector} as a parameter and returns an instance of the abstract {\tt ObjectiveValue} class. Since the AVM only needs to know whether one class has a ``better'' objective value than another, exact numerical values are not needed, and so this class requires the ``{\tt betterThan}'', ``{\tt worseThan}'' and ``{\tt sameAs}'' methods to overridden.
 %This is useful for when a problem involves two objectives that must be optimized, but with some precedence (e.g., the classical ``approach level'' and ``branch distance'' components of the fitness function for structural test data generation \cite{}), avoiding the need for a normalization function to combine the values. % Arcuri, Poulding GECCO reference.
-Nevertheless, the {\tt objective} package also supplies a concrete {\tt NumericalObjectiveValue} class for returning higher-is-better or lower-is-better numerical objective values.
+However, the {\tt objective} package also supplies the concrete {\tt NumericalObjectiveValue} class for returning higher-is-better or lower-is-better numerical objective values.
 \end{sloppypar}
 
 \begin{sloppypar}
@@ -203,9 +213,9 @@ The following is the output of the search process, showing how the AVM search co
 
 \snippet{search-output}
 
-
-
+\vspace{-1em}
 \section{Conclusions}
+\vspace{-1em}
 \label{sec:conclusions}
 This paper introduced \name, an open source implementation of the AVM and framework for its use in SBSE projects. Possible future applications of the AVM include the following:
 
@@ -222,6 +232,7 @@ Bugs can occur as a result of errors when programming constants and settings fil
 %\inlineheading{Acknowledgment}
 %We thank Joseph Kempka for an initial implementation of Geometric and Lattice search that we used to test our own version against.
 
+\vspace{-1em}
 % References
 \bibliographystyle{splncs03}
 \bibliography{refs}
