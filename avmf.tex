@@ -1,12 +1,17 @@
+\let\oldvec\vec % avoid ams math vector error
 \documentclass{llncs}
+\let\vec\oldvec % avoid ams math vector error
 
 % needed for algorithms
-\usepackage[ruled]{algorithm}
-\usepackage[noend]{algorithmic}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 \usepackage{amsmath}
+% for algorithms
+\newcommand{\mf}{\mathit{mf}}
 
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{bookmark}
 \usepackage{xspace}
 
 \newcommand{\AVM}{Alternating Variable Method\xspace}
@@ -16,10 +21,6 @@
 \newcommand{\gitclone}{{\tt git clone https://github.com/AVMf/avmf.git}\xspace}
 \newcommand{\inlineheading}[1]{\vspace{1ex} \noindent {\bf #1.}}
 \newcommand{\codescalefactor}{0.7}
-
-% for algorithms
-\newcommand{\mf}{\mathit{mf}}
-
 \newcommand{\snippet}[1]{
 	\begin{center}
 		\scalebox{\codescalefactor}{
@@ -31,10 +32,21 @@
 		}
 	\end{center}
 }
+\newcommand{\ips}{IPS}
+\newcommand{\gs}{GS}
+\newcommand{\ls}{LS}
+
+\newcommand{\AppliesAll}{\Comment{$\{\textrm{\ips}, \textrm{\gs}, \textrm{\ls}\}$}}
+\newcommand{\AppliesIPS}{\Comment{$\{\textrm{\ips}\}$}}
+\newcommand{\AppliesGS}{\Comment{$\{\textrm{\gs}\}$}}
+\newcommand{\AppliesLS}{\Comment{$\{\textrm{\ls}\}$}}
+\newcommand{\AppliesGSLS}{\Comment{$\{\textrm{\gs}, \textrm{\ls}\}$}}
+
+\newcommand{\pagerule}{\noindent \rule{\textwidth}{.5pt}}
 
 \begin{document}
 
-\title{\name: An\:Open-Source\:Framework\:and\\$\!$Implementation\:of\:the\:Alternating\:Variable\:Method\vspace{-.5em}}
+\title{\texorpdfstring{\name: An\:Open-Source\:Framework\:and\\$\!$Implementation\:of\:the\:Alternating\:Variable\:Method\vspace{-.5em}}{}}
 
 %\author{Phil McMinn\inst{1} \and Gregory M. Kapfhammer\inst{2} \and Dirk Sudholt\inst{1} \and Sonal Mahajan\inst{3} \and William G.J. Halfond\inst{3}}
 
@@ -42,8 +54,8 @@
 
 % aim: get author block to fit in this space (or less)
 \author{
-	Suppressed\\
-	for\\
+	Authors and institutions\\
+	suppressed for\\
 	\vspace{1mm} \small{double-blind review}
 	\vspace{-2em}
 }
@@ -79,123 +91,67 @@ The AVM is therefore capable of handling a variety of search representations and
 
 % Before introducing \name, we briefly review the basic form of the AVM algorithm and recent extensions.
 
-\section{The Basic Form of the AVM}
-\label{sec:basic}
-
+\section{The AVM and Recent Improvements to the Algorithm}
 % something about how the algorithm starts, randomly or with initial values?
+\vspace{-1em}
+\inlineheading{The original AVM} The AVM optimizes a vector $\vec{x} = (x_1, \dots, x_{len})$ according to some objective function by taking each individual variable $\vec{x}_i, 0 \leq i \leq len$ of the vector in turn and subjecting it to an isolated search process. The original AVM used a variable search process subsequently referred to as ``Iterated Pattern Search'' (IPS)~\cite{Kempka2015}, shown by lines 1--7 of Figure~\ref{fig:alg}. The initial part of this algorithm involves making a small increase to the value of the variable followed by a small decrease (lines 2--3), referred to as {\it exploratory moves}. If either move leads to an improvement in the objective value for the complete vector, a positive or negative ``direction'' has been established for making further {\it pattern moves} (lines 4--6). Pattern moves of increasing size continue to be made while the objective value improves. When the objective value does not improve on the last, it is likely that the search has overshot the local optimum, due to a pattern move that was larger than the difference between the current value of $\vec{x}_i$ and the optimal value. When this occurs, IPS loops back to the exploratory move process to reestablish a new direction. If exploratory moves do not lead to an improvement in objective value, IPS terminates and hands back control the main loop for consideration of the next variable in the vector.
 
-The original AVM used by Korel~\cite{Korel1990} takes a vector $\vec{x} = (x_1, \dots, x_n)$, and cycles through each element of the vector one by one as shown by Algorithm~\ref{basic}, invoking a specific local search to improve each one in turn. The local search of the original AVM, referred to as ``Iterated Pattern Search'' (IPS), is shown in Algorithm~\ref{alg:ips}. The initial part of the search corresponds to so-called {\it exploratory} moves. A small increment is made to the variable followed by a small decrement. If either of the moves yields an improvement in the objective value for the complete value, a positive or negative ``direction'' has been established. IPS seeks to make further moves in the direction, referred to as {\it pattern} moves. Consecutive pattern moves double in size, so long as the previous move improved the objective value. In this manner, IPS gets closer and closer to the target value until it likely ``overshoots'' the target, due to a pattern move that was larger than the difference between the current position and the goal value. When this occurs, IPS reestablishes a new direction with two more exploratory moves. If neither move leads to an improvement in objective value, the local search terminates and hands back control the main loop.
+If the AVM completes a cycle of vector variable searches without improving the objective function, the search process can be restarted with a new (typically random) series of vector variable values.
+The AVM continues until resources are exhausted (e.g., a maximum number of objective function evaluations or restarts is reached, or a time limit has expired), or the optimal target vector is discovered. (For simplicity, these termination criteria are not included as part of the algorithm definitions in Figure~\ref{fig:alg}.)
 
-\begin{algorithm}[b]
-	\small
-	\algsetup{linenosize=\small}
-		\caption{The main loop of the AVM for optimizing $\vec{x} = (x_1, \dots, x_n)$ % \mbox{(taken from Kempka et al. \cite{Kempka2015})}
-		}
-	\begin{algorithmic}[1]
-		\WHILE{\textbf{true}}
-			\STATE \textbf{let} $\vec{x}:=\mathbf{random}()$
-			\STATE \textbf{let} $i:=1$, $c:=0$
-			\WHILE{$c<n$}
-				\STATE \textbf{let} $f \colon x \mapsto \mf(x_1, \dots, x_{i-1}, x, x_{i+1}, \dots, x_n)$
-				\STATE \textbf{let} $\vec{x'}:=\mathbf{local\_search}(f,x_i)$
-				 \IF{$\mf(\vec{x'})<\mf(\vec{x})$}
-					\STATE \textbf{let} $\vec{x}:=\vec{x'}$, $c:=0$
-				\ELSE
-					\STATE \textbf{let} $c:=c+1$
-				\ENDIF
-				\STATE \textbf{let} $i:= (i \bmod n) +1$
-			\ENDWHILE
-		\ENDWHILE
-	\end{algorithmic}
-	\label{alg:basic}
-\end{algorithm}
+\begin{figure}[t!]
+\pagerule
 
-\begin{algorithm}[b]
-	\footnotesize
-	\algsetup{linenosize=\scriptsize}
-	\caption{$\text{Iterated Pattern Search, starting at }x\in D$}
-	\begin{algorithmic}[1]
-		\WHILE{$\textbf{true}$}
-			\STATE$\textbf{if }f(x-1)\geq f(x)\textbf{ and }f(x+1)\geq f(x)\textbf{ return }x$
-			\STATE$\textbf{if }f(x-1)<f(x+1)\textbf{ then let }k:=-1\textbf{ else let }k:=1$
-			\WHILE{$f(x+k)<f(x)$}
-				\STATE$\textbf{let }x:=x+k\text{, }k:=2k$
-			\ENDWHILE
-		\ENDWHILE
-	\end{algorithmic}
-	\label{alg:ips}
-\end{algorithm}
+\begin{algorithmic}[1]
+	\scriptsize
 
-If a complete cycle of the vector occurs without any improvement in the objective function, the search has hit a local optimum, at which point it restarts by randomizing the vector.
+	\While{$\textbf{true}$} \AppliesIPS
+		\State$\textbf{if }obj(x-1)\geq obj(x)\textbf{ and }obj(x+1)\geq obj(x)\textbf{ return }x$ \AppliesAll
+		\State$\textbf{if }obj(x-1)<obj(x+1)\textbf{ then let }k:=-1\textbf{ else let }k:=1$ \AppliesAll
+		\While{$obj(x+k)<obj(x)$} \AppliesAll
+			\State$\textbf{let }x:=x+k\text{, }k:=2k$ \AppliesAll
+		\EndWhile \AppliesAll
+	\EndWhile \AppliesIPS\vspace{1mm}
 
-This continues until resources are exhausted (e.g., a maximum number of objective function evaluations or restarts is reached, or a time limit has expired), or the optimal target vector is discovered. (For simplicity, these termination criteria are not included as part of the algorithm definitions.)
+	\State$\textbf{let }\ell:=\min(x-k/2,x+k)\text{, }r:=\max(x-k/2,x+k)$ \AppliesGSLS\vspace{1mm}
 
+	\While{$\ell<r$} \AppliesGS
+		\If{$obj(\lfloor(\ell+r)/2\rfloor)<obj(\lfloor(\ell+r)/2\rfloor+1)$} \AppliesGS
+			\State$r:=\lfloor(\ell+r)/2\rfloor$ \AppliesGS
+		\Else \AppliesGS
+			\State$\ell:=\lfloor(\ell+r)/2\rfloor+1$ \AppliesGS
+		\EndIf \AppliesGS
+	\EndWhile \AppliesGS\vspace{1mm}
 
+	\State$\textbf{let }n:=\min\{n\mid F_{n}\geq r-l+2\}$ \AppliesLS
+	\While{$n>3$} \AppliesLS
+		\If{$\ell+F_{n-1}-1\leq r\textbf{ and }obj(\ell+F_{n-2}-1)\geq obj(\ell+F_{n-1}-1)$} \AppliesLS
+			\State$\textbf{let }\ell:=\ell+F_{n-2}$ \AppliesLS
+		\EndIf \AppliesLS
+		\State$\textbf{let }n:=n-1$ \AppliesLS
+	\EndWhile \AppliesLS\vspace{1mm}
 
-\section{Improvements to the AVM}
-\label{sec:improvements}
+	\State$x:=\ell$ \AppliesGSLS
+\end{algorithmic}
+\vspace{-1em}
+\pagerule
+\vspace{-1em}
+\caption{\label{fig:alg}IPS, LS, GS search algorithms for the AVM for a variable $x \in D$. $obj(x)$ denotes the problem-specific objective function, which is computed for the complete vector $\vec{x}$ currently being optimized by the AVM, where $\vec{x}_i := x, 0 \leq i \leq len$. Each line is annotated to show to which particular algorithm(s) it belongs.}
+\vspace{-1.5em}
+\end{figure}
 
-\inlineheading{Representations}
+\inlineheading{New Representations}
 The original AVM was only demonstrated for integer variables. Harman and McMinn~\cite{Harman2007} extended this definition by allowing each variable to have a precision setting $p$, allowing floating-point values to be handled. Exploratory moves then consisted of the smallest value of the variable according to $p$ (i.e., $10^{-p}$). McMinn et al.~\cite{McMinn2015} allowed string variables to be represented by the approach. A string variable is essentially a sub-vector, whose elements are characters that are individually manipulated by the local search routine. The length of this sub-vector is allowed to vary through a special sequence of moves that increase and decrease its size, allowing for the optimization of variable-length strings.
 
-\inlineheading{Algorithms}
-Kempka et al.~\cite{Kempka2015} proposed two new local searches for the AVM, and proved that are more efficient in unimodal landscapes. The first, ``Geometric'' search is shown by Algorithm~\ref{alg:geometric}. Geometric search performs exploratory moves followed by pattern moves, if a direction of improvement can be established. Following pattern moves, it does not return to exploratory moves, but instead ``brackets'' the upper and lower limits in which the local optima must lie, and performs a binary search.
+\inlineheading{New Variable Search Algorithms}
+Kempka et al.~\cite{Kempka2015} proposed two new local searches for the AVM, and proved that are more efficient for unimodal objective function landscapes. ``Geometric Search'' (GS) is shown by lines 2--6, 8--15 and 23 of Figure~\ref{fig:alg}. Like IPS, GS starts by performing exploratory moves followed by pattern moves, if a direction of improvement can be established. Unlike IPS it does not iterate after overshooting the optimum. Instead it uses past moves to  ``brackets'' the upper and lower limits in which the local optima must lie, and performs a binary search (lines 8--15).
 
-Kempka et al.~\cite{Kempka2015} also proposed ``Lattice'' search, which is shown to be even faster than Geometric search. Lattice search is similar to Geometric search, except that after bracketing the position of the local optimum, converges on the target values using Fibonacci numbers, as shown by Algorithm~\ref{alg:lattice}.
-
-\begin{algorithm}[t]
-	\footnotesize
-	\algsetup{linenosize=\scriptsize}
-	\caption{$\text{Geometric search, starting at }x\in D$}
-	\begin{algorithmic}[1]
-		\STATE$\textbf{if }f(x-1)\geq f(x)\textbf{ and }f(x+1)\geq f(x)\textbf{ return }x$
-		\STATE$\textbf{if }f(x-1)<f(x+1)\textbf{ then let }k:=-1\textbf{ else let }k:=1$
-		\WHILE{$f(x+k)<f(x)$}
-			\STATE$\textbf{let }x:=x+k\text{, }k:=2k$
-		\ENDWHILE
-		\STATE$\textbf{let }\ell:=\min(x-k/2,x+k)\text{, }r:=\max(x-k/2,x+k)$
-		\WHILE{$\ell<r$}
-			\IF{$f(\lfloor(\ell+r)/2\rfloor)<f(\lfloor(\ell+r)/2\rfloor+1)$}
-				\STATE$r:=\lfloor(\ell+r)/2\rfloor$
-			\ELSE
-				\STATE$\ell:=\lfloor(\ell+r)/2\rfloor+1$
-			\ENDIF
-		\ENDWHILE
-		\RETURN$\ell$
-	\end{algorithmic}
-	\vspace*{1mm}
-	\label{alg:geometric}
-\end{algorithm}
-
-\begin{algorithm}[t]
-	\footnotesize
-	\algsetup{linenosize=\scriptsize}
-	\caption{$\text{Lattice search, starting at }x\in D$}
-	\begin{algorithmic}[1]
-		\STATE$\textbf{if }f(x-1)\geq f(x)\textbf{ and }f(x+1)\geq f(x)\textbf{ return }x$
-		\STATE$\textbf{if }f(x-1)<f(x+1)\textbf{ then let }k:=-1\textbf{ else let }k:=1$
-		\WHILE{$f(x+k)<f(x)$}
-			\STATE$\textbf{let }x:=x+k\text{, }k:=2k$
-		\ENDWHILE
-		\STATE$\textbf{let }\ell:=\min(x-k/2,x+k)\text{, }r:=\max(x-k/2,x+k)$
-		\STATE$\textbf{let }n:=\min\{n\mid F_{n}\geq r-l+2\}$
-		\WHILE{$n>3$}
-			\IF{$\ell+F_{n-1}-1\leq r\textbf{ and }f(\ell+F_{n-2}-1)\geq f(\ell+F_{n-1}-1)$}
-				\STATE$\textbf{let }\ell:=\ell+F_{n-2}$
-			\ENDIF
-			\STATE$\textbf{let }n:=n-1$
-		\ENDWHILE
-		\RETURN$\ell$
-	\end{algorithmic}
-	\vspace*{1mm}
-	\label{alg:lattice}
-\end{algorithm}
-
+Kempka et al.~\cite{Kempka2015} further proposed ``Lattice Search'' (LS), and showed that it is even more efficient than GS, provided the objection function landscape is, again, unimodal. LS (lines 2--6, 8 and 16--23 of Figure~\ref{fig:alg}) is similar to GS, except that after bracketing the location of the optimum, it converges on it by make moves that increase the value of $\vec{x}$ using Fibonacci numbers, provided by the sequence $F$.
 
 
 \section{The \longname (\name)}
 \label{sec:avmf}
-The \longname (\name) is an object-oriented framework and Java implementation of the AVM and its enhancements since the original version proposed by Korel.  The framework has been implemented to make the core algorithms behind the AVM and its use as clear as possible, closely matching paper definitions supplied in Algorithms~\ref{alg:basic}--\ref{alg:lattice} (i.e., through the use of similar variable names and decision structures etc.) while adhering to good principles of object-oriented design.
+The \longname (\name) is an object-oriented framework and Java implementation of the AVM and its enhancements since the original version proposed by Korel.  The framework has been implemented to make the core algorithms behind the AVM and its use as clear as possible, closely matching the algorithmic definitions supplied by Figure~\ref{fig:alg} (i.e., through the use of similar variable names and decision structures etc.) while adhering to good principles of object-oriented design.
 
 It is publicly available for download at \repourl (a GitHub-hosted Git repository) for inclusion in SBSE projects, where the AVM may be the core search algorithm or be a component of a more complex one (e.g., a memetic algorithm) to which calls to the framework are made. Or, the code can simply be lifted from the repository and re-used and adapted as researchers see fit.
 
