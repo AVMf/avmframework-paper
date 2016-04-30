@@ -22,17 +22,17 @@
 \newcommand{\inlineheading}[1]{\vspace{1mm} \noindent {\bf #1.}}
 \newcommand{\codescalefactor}{0.7}
 \newcommand{\snippet}[1]{
-    \vspace{-1ex}
-    \begin{center}
-        \scalebox{\codescalefactor}{
-            \begin{tabular}{|l|}
-            \hline
-            \input{snippets/#1}
-            \hline
-            \end{tabular}
-        }
-    \end{center}
-    \vspace{-1ex}
+		\vspace{-1ex}
+		\begin{center}
+				\scalebox{\codescalefactor}{
+						\begin{tabular}{|l|}
+						\hline
+						\input{snippets/#1}
+						\hline
+						\end{tabular}
+				}
+		\end{center}
+		\vspace{-1ex}
 }
 \newcommand{\ips}{IPS}
 \newcommand{\gs}{GS}
@@ -56,9 +56,9 @@
 
 % aim: get author block to fit in this space (or less)
 \author{
-    Authors and institutions\\
-    suppressed for double-blind review
-    \vspace{-1em}
+		Authors and institutions\\
+		suppressed for double-blind review
+		\vspace{-1em}
 }
 \institute{}
 
@@ -115,35 +115,35 @@ The AVM continues in this fashion until resources are exhausted (e.g., a maximum
 \pagerule
 
 \begin{algorithmic}[1]
-    \scriptsize
+		\scriptsize
 
-    \While{$\textbf{true}$} \AppliesIPS
-        \State$\textbf{if }obj(x-1)\geq obj(x)\textbf{ and }obj(x+1)\geq obj(x)\textbf{ return }x$ \AppliesAll
-        \State$\textbf{if }obj(x-1)<obj(x+1)\textbf{ then let }k:=-1\textbf{ else let }k:=1$ \AppliesAll
-        \While{$obj(x+k)<obj(x)$} \AppliesAll
-            \State$\textbf{let }x:=x+k\text{, }k:=2k$ \AppliesAll
-        \EndWhile \AppliesAll
-    \EndWhile \AppliesIPS\vspace{1mm}
+		\While{$\textbf{true}$} \AppliesIPS
+				\State$\textbf{if }obj(x-1)\geq obj(x)\textbf{ and }obj(x+1)\geq obj(x)\textbf{ return }x$ \AppliesAll
+				\State$\textbf{if }obj(x-1)<obj(x+1)\textbf{ then let }k:=-1\textbf{ else let }k:=1$ \AppliesAll
+				\While{$obj(x+k)<obj(x)$} \AppliesAll
+						\State$\textbf{let }x:=x+k\text{, }k:=2k$ \AppliesAll
+				\EndWhile \AppliesAll
+		\EndWhile \AppliesIPS\vspace{1mm}
 
-    \State$\textbf{let }\ell:=\min(x-k/2,x+k)\text{, }r:=\max(x-k/2,x+k)$ \AppliesGSLS\vspace{1mm}
+		\State$\textbf{let }\ell:=\min(x-k/2,x+k)\text{, }r:=\max(x-k/2,x+k)$ \AppliesGSLS\vspace{1mm}
 
-    \While{$\ell<r$} \AppliesGS
-        \If{$obj(\lfloor(\ell+r)/2\rfloor)<obj(\lfloor(\ell+r)/2\rfloor+1)$} \AppliesGS
-            \State$r:=\lfloor(\ell+r)/2\rfloor$ \AppliesGS
-        \Else \AppliesGS
-            \State$\ell:=\lfloor(\ell+r)/2\rfloor+1$ \AppliesGS
-        \EndIf \AppliesGS
-    \EndWhile \AppliesGS\vspace{1mm}
+		\While{$\ell<r$} \AppliesGS
+				\If{$obj(\lfloor(\ell+r)/2\rfloor)<obj(\lfloor(\ell+r)/2\rfloor+1)$} \AppliesGS
+						\State$r:=\lfloor(\ell+r)/2\rfloor$ \AppliesGS
+				\Else \AppliesGS
+						\State$\ell:=\lfloor(\ell+r)/2\rfloor+1$ \AppliesGS
+				\EndIf \AppliesGS
+		\EndWhile \AppliesGS\vspace{1mm}
 
-    \State$\textbf{let }n:=\min\{n\mid F_{n}\geq r-l+2\}$ \AppliesLS
-    \While{$n>3$} \AppliesLS
-        \If{$\ell+F_{n-1}-1\leq r\textbf{ and }obj(\ell+F_{n-2}-1)\geq obj(\ell+F_{n-1}-1)$} \AppliesLS
-            \State$\textbf{let }\ell:=\ell+F_{n-2}$ \AppliesLS
-        \EndIf \AppliesLS
-        \State$\textbf{let }n:=n-1$ \AppliesLS
-    \EndWhile \AppliesLS\vspace{1mm}
+		\State$\textbf{let }n:=\min\{n\mid F_{n}\geq r-l+2\}$ \AppliesLS
+		\While{$n>3$} \AppliesLS
+				\If{$\ell+F_{n-1}-1\leq r\textbf{ and }obj(\ell+F_{n-2}-1)\geq obj(\ell+F_{n-1}-1)$} \AppliesLS
+						\State$\textbf{let }\ell:=\ell+F_{n-2}$ \AppliesLS
+				\EndIf \AppliesLS
+				\State$\textbf{let }n:=n-1$ \AppliesLS
+		\EndWhile \AppliesLS\vspace{1mm}
 
-    \State$x:=\ell$ \AppliesGSLS
+		\State$x:=\ell$ \AppliesGSLS
 \end{algorithmic}
 \vspace{-1em}
 \pagerule
@@ -159,7 +159,7 @@ computed for the complete vector $\vec{x}$ currently being optimized by the AVM,
 Korel only demonstrated the original AVM with integer variables~\cite{Korel1990}. Harman and McMinn~\cite{Harman2007} extended this initial definition by allowing each variable to be specified with a set number of decimal places $p$, allowing fixed-point numbers to be handled. Exploratory moves correspond to the smallest possible increments and decrements of the variable (i.e., $\pm10^{-p}$). McMinn et al.~\cite{McMinn2015} allowed string variables to be represented by the approach. A string variable is essentially a sub-vector, whose elements are characters that are individually manipulated by the local search routine. The length of this sub-vector is allowed to vary through a special sequence of moves that increase and decrease its size, allowing for the optimization of variable-length strings.
 
 \inlineheading{New Variable Search Algorithms}
-Kempka et al.~\cite{Kempka2015} proposed two new variable searches for the AVM, shown as part of Figure~\ref{fig:alg}). Kempka et al. proved that these search are more efficient than IPS for unimodal objective function landscapes. ``Geometric Search'' (GS) begins by performing exploratory moves followed by pattern moves like IPS. Unlike IPS, however, it does not iterate after overshooting the optimum. Instead it uses past moves to  ``bracket'' the upper and lower limits of the variable in which the optimum must lie, performing a binary search to finally locate it (lines 8--15 of Figure~\ref{fig:alg}). ``Lattice Search'' (LS) is a slightly faster alternative to GS (provided the objection function landscape is, again, unimodal). LS is similar to GS, except that after bracketing the optimum, it converges upon it through moves that increase the value of $\vec{x}$ from the lower end by adding Fibonacci numbers (lines 16--22 of the figure).
+Kempka et al.~\cite{Kempka2015} proposed two new variable searches for the AVM, shown by Figure~\ref{fig:alg}. Kempka et al. proved that these search are more efficient than IPS for unimodal objective function landscapes. ``Geometric Search'' (GS) begins by performing exploratory moves followed by pattern moves like IPS. Unlike IPS, however, it does not iterate after overshooting the optimum. Instead it uses past moves to  ``bracket'' the upper and lower limits of the variable in which the optimum must lie, performing a binary search to finally locate it (lines 8--15 of Figure~\ref{fig:alg}). ``Lattice Search'' (LS) is a slightly faster alternative to GS (provided the objection function landscape is, again, unimodal). LS is similar to GS, except that after bracketing the optimum, it converges upon it through moves that increase the value of $\vec{x}$ from the lower end by adding Fibonacci numbers (lines 16--22 of the figure).
 
 \vspace{-1em}
 \section{The \longname (\name)}
