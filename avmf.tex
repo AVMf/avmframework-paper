@@ -77,7 +77,7 @@ Recent developments to the AVM have generalized the types of representations it 
 \vspace{-1ex}
 The {\it \AVM} (AVM) is a local search method that was first proposed for an SBSE problem by Bogdan Korel in 1990~\cite{Korel1990}
 %as an adaptation of so-called ``direct'' search methods \cite{Gill1974,Glass1965}
-for the generation of software test data.
+for generating software test data.
 % The AVM is an adaptation of so-called direct search methods \cite{Gill1974,Glass1965} to the test data generation problem.
 % In particular, the AVM that did not make assumptions about the branching constraints of the program --- for example, their linearity and continuity.
 Despite the application of supposedly more robust, global search techniques to this problem (e.g., Genetic Algorithms), the AVM has stood the test of time. In 2007, Harman and McMinn~\cite{Harman2007} reported its effectiveness and efficiency for a series of C programs, and combined it with a GA to provide a ``best of'' Memetic Algorithm approach~\cite{Harman2010}. It has since been used to generate test suites for Java programs~\cite{%Fraser2013,
@@ -106,9 +106,11 @@ The AVM is therefore capable of handling a variety of search representations and
 \section{The AVM and Recent Improvements to the Algorithm}
 % something about how the algorithm starts, randomly or with initial values?
 \vspace{-1em}
-\inlineheading{The original AVM} The AVM optimizes a vector $\vec{x} = (x_1, \dots, x_{len})$ according to some objective function by taking each variable $\vec{x}_i, 0 \leq i \leq len$ of the vector in turn and subjecting it to an individual search process. The original AVM used a variable search process subsequently named ``Iterated Pattern Search'' (IPS)~\cite{Kempka2015}, shown by lines 1--7 of Figure~\ref{fig:alg}. The initial part of this algorithm involves making an increase of $1$ to the value of the variable, followed by a decrease (lines 2--3). These are referred to as {\it exploratory moves}. If either exploratory move leads to an improvement in the objective value for the complete vector, a positive or negative ``direction'' is established for making further {\it pattern moves} (lines 4--6). Pattern moves of increasing size continue to be made while the objective value improves. When a pattern move does not improve on the objective value compared to the previous move, the search has likely overshot the optimum, due to a pattern move that was larger than the difference between the current value of $\vec{x}_i$ and the optimal value. When this occurs, IPS loops back to the exploratory move process to re-establish a new direction. If exploratory moves do not lead to an improvement in objective value, IPS terminates and hands back control to the main loop, and the consideration of the next variable in the vector.
+\inlineheading{The original AVM} The AVM optimizes a vector $\vec{x} = (x_1, \dots, x_{len})$ according to some objective function by taking each variable $\vec{x}_i, 0 \leq i \leq len$ of the vector in turn and subjecting it to an individual search process. The original AVM used a variable search process subsequently named
+% TODO: This would be a good place to cite the GECCO version of this paper, if space, as it was the first to name IPS
+``Iterated Pattern Search'' (IPS)~\cite{Kempka2015}, shown by lines 1--7 of Figure~\ref{fig:alg}. The initial part of this algorithm involves making an increase and decrease of $1$ to the value of the variable (lines 2--3), referred to as {\it exploratory moves}. If either exploratory move leads to an improvement in the objective value for the complete vector, a positive or negative ``direction'' is established for making further {\it pattern moves} (lines 4--6). Pattern moves of increasing size continue to be made while the objective value improves. When a pattern move does not improve on the objective value compared to the previous move, the search has likely overshot the optimum, due to a pattern move that was larger than the difference between the current value of $\vec{x}_i$ and the optimal value. When this occurs, IPS loops back to the exploratory move process to re-establish a new direction. If exploratory moves do not lead to an improvement in objective value, IPS terminates and hands back control to the main loop, and the consideration of the next variable in the vector.
 
-When all variables in the vector have been considered, the AVM cycles back to the first. When all variables have been considered without any improvement in the objective function, the AVM is essentially ``stuck'' on a local optimum. At this point the search process can be restarted with a new (typically random) series of vector values.
+When all variables in the vector have been considered, the AVM wraps back to the first. When a cycle of all variables has completed without any improvement in the objective function, the AVM is lodged in a local optimum. At this point the search process can be restarted with a new (typically random) series of vector values.
 The AVM continues in this fashion until resources are exhausted (e.g., a maximum number of objective function evaluations or restarts have been expended, or a time limit has expired), or, the best outcome is attained --- the optimal target vector is discovered. (For simplicity, these different termination criteria are not included as part of the algorithm definitions in Figure~\ref{fig:alg}.)
 
 \begin{figure}[t!]
@@ -172,7 +174,7 @@ The \longname (\name) implements the AVM algorithm and subsequent enhancements s
 \name provides a framework of Java classes to enable the algorithms to be easily used in SBSE projects, which we now describe in detail below. Each aspect of the framework is practically demonstrated in the source code of a series of examples in the repository, which are introduced at the end of this section.
 
 \begin{sloppypar}
-\inlineheading{Configuring an AVM search} The primary class is the {\tt AVM} class in the root ({\tt org.avmframework}) package. In order to construct an {\tt AVM} instance, the developer must supply an instance of one of the variable search methods; {\tt IteratedPatternSearch}, {\tt GeometricSearch} or {\tt LatticeSearch}, which reside in the {\tt localsearch} package. The developer must also construct the {\tt AVM} instance using a {\tt TerminationPolicy} parameter, an object that decides when the AVM should terminate if a solution cannot found. Options include a maximum number of objective function evaluations, a maximum number of restarts, or a time limit. Finally, constructing the {\tt AVM} instance further requires two objects of type {\tt Initializer} that are used to initialize variable vector values at the start of the search and re-initialize them on a restart. Default values may be used that can be specified for each variable, or random values can be chosen (through instances of either {\tt DefaultInitializer} or {\tt RandomInitializer} respectively, classes that reside in the {\tt initializer} package). For random values, \name requires a {\tt RandomGenerator} from the {\tt org.apache.commons} library. This library provides an implementation of the Mersenne Twister algorithm that can be used in conjunction with \name, amongst others.
+\inlineheading{Configuring an AVM search} The primary class is the {\tt AVM} class in the root ({\tt org.avmframework}) package. In order to construct an {\tt AVM} instance, the developer must supply an instance of one of the variable search methods; {\tt IteratedPatternSearch}, {\tt GeometricSearch} or {\tt LatticeSearch}, which reside in the {\tt localsearch} package. The developer must also construct the {\tt AVM} instance using a {\tt TerminationPolicy} parameter, an object that decides when the AVM should terminate if a solution cannot found. Options include a maximum number of objective function evaluations, a maximum number of restarts, or a time limit. Finally, constructing the {\tt AVM} instance further requires two objects of type {\tt Initializer} that are used to initialize variable vector values at the start of the search and re-initialize them on a restart. Default values may be used that can be specified for each variable, or random values can be chosen (through instances of either {\tt DefaultInitializer} or {\tt RandomInitializer} respectively, classes that reside in the {\tt initializer} package). For random values, \name requires a {\tt RandomGenerator} from the {\tt org.apache.commons} library, which provides an implementation of the Mersenne Twister algorithm, which can be used to generate random numbers within \name, amongst others.
 %(The examples provided with \name use the library's implementation of the Mersenne Twister algorithm.)
 \end{sloppypar}
 
@@ -229,12 +231,92 @@ Bugs can occur as a result of errors when programming constants and settings fil
 %\inlineheading{Acknowledgment}
 %We thank Joseph Kempka for an initial implementation of Geometric and Lattice search that we used to test our own version against.
 
-\vspace{-1em}
+% \vspace{-1em}
 
 % References
 \bibliographystyle{splncs03}
 
-% These can be in \scriptsize when finalized (need to hack the bbl file generated)
-\bibliography{refs}
+%% Uncomment and remove the following to regenerate the references
+%\bibliography{refs}
+
+
+%% pasted in from avmf.bbl:
+
+\begin{thebibliography}{10}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+
+% Manually inserted
+\scriptsize
+
+\bibitem{Afshan2013}
+Afshan, S., McMinn, P., Stevenson, M.: Evolving readable string test inputs
+	using a natural language model to reduce human oracle cost. In: ICST (2013)
+
+\bibitem{Arrieta2016}
+Arrieta, A., Wang, S., Sagardui, G., Etxeberria, L.: Test case prioritization
+	of configurable cyber-physical systems with weight-based search algorithms.
+	In: GECCO (2016)
+
+\bibitem{Fraser2015b}
+Fraser, G., Arcuri, A., McMinn, P.: A memetic algorithm for whole test suite
+	generation. JSS  (2015)
+
+\bibitem{Fraser2013b}
+Fraser, G., Staats, M., McMinn, P., Arcuri, A., Padberg, F.: Does automated
+	white-box test generation really help software testers? In: ISSTA (2013)
+
+\bibitem{Harman2007}
+Harman, M., McMinn, P.: A theoretical and empirical analysis of evolutionary
+	testing and hill climbing for structural test data generation. In: ISSTA
+	(2007)
+
+\bibitem{Harman2010}
+Harman, M., McMinn, P.: A theoretical and empirical study of search based
+	testing: Local, global and hybrid search. IEEE TSE  (2010)
+
+\bibitem{Kapfhammer2013}
+Kapfhammer, G.M., McMinn, P., Wright, C.J.: Search-based testing of relational
+	schema integrity constraints across multiple database management systems. In:
+	ICST (2013)
+
+\bibitem{Kempka2015}
+Kempka, J., McMinn, P., Sudholt, D.: Design and analysis of different
+	alternating variable searches for search-based software testing. TCS  (2015)
+
+\bibitem{Korel1990}
+Korel, B.: Automated software test data generation. IEEE TSE  (1990)
+
+\bibitem{Lakhotia2010}
+Lakhotia, K., Tillmann, N., Harman, M., Halleux, J.: {FloPSy} --- search-based
+	floating point constraint solving for symbolic execution. In: ICTSS (2010)
+
+\bibitem{McMinn2015}
+McMinn, P., Wright, C.J., Kapfhammer, G.M.: The effectiveness of test coverage
+	criteria for relational database schema integrity constraints. ACM TOSEM
+	(2015)
+
+\bibitem{Pradhan2016}
+Pradhan, D., Wang, S., Ali, S., Yue, T.: Search-based cost-effective test case
+	selection for manual execution within time budget: An empirical study. In:
+	GECCO (2016)
+
+\bibitem{Qiu2016}
+Qiu, X., Ali, S., Yue, T., Zhang, L.: Reliability-redundancy-location
+	allocation with maximum reliability and minimum cost using search techniques.
+	IST  (2016)
+
+\bibitem{Yue2014}
+Yue, T., Ali., S.: Applying search algorithms for optimizing stakeholders
+	familiarity and balancing workload in requirements assignment. In: GECCO
+	(2014)
+
+\bibitem{Yue2016}
+Yue, T., Ali, S., Lu, H., Nie., K.: Search-based decision ordering to
+	facilitate product line engineering of cyber-physical system. In: MODELSWARD
+	(2016)
+
+\end{thebibliography}
+
 
 \end{document}
