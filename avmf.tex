@@ -22,17 +22,17 @@
 \newcommand{\inlineheading}[1]{\vspace{1mm} \noindent {\bf #1.}}
 \newcommand{\codescalefactor}{0.7}
 \newcommand{\snippet}[1]{
-		\vspace{-1ex}
-		\begin{center}
-				\scalebox{\codescalefactor}{
-						\begin{tabular}{|l|}
-						\hline
-						\input{snippets/#1}
-						\hline
-						\end{tabular}
-				}
-		\end{center}
-		\vspace{-1ex}
+        \vspace{-1ex}
+        \begin{center}
+                \scalebox{\codescalefactor}{
+                        \begin{tabular}{|l|}
+                        \hline
+                        \input{snippets/#1}
+                        \hline
+                        \end{tabular}
+                }
+        \end{center}
+        \vspace{-1ex}
 }
 \newcommand{\ips}{IPS}
 \newcommand{\gs}{GS}
@@ -56,9 +56,9 @@
 
 % aim: get author block to fit in this space (or less)
 \author{
-		Authors and institutions\\
-		suppressed for double-blind review
-		\vspace{-1em}
+        Authors and institutions\\
+        suppressed for double-blind review
+        \vspace{-1em}
 }
 \institute{}
 
@@ -117,35 +117,35 @@ The AVM continues in this fashion until resources are exhausted (e.g., a maximum
 \pagerule
 
 \begin{algorithmic}[1]
-		\scriptsize
+        \scriptsize
 
-		\While{$\textbf{true}$} \AppliesIPS
-				\State$\textbf{if }obj(x-1)\geq obj(x)\textbf{ and }obj(x+1)\geq obj(x)\textbf{ return }x$ \AppliesAll
-				\State$\textbf{if }obj(x-1)<obj(x+1)\textbf{ then let }k:=-1\textbf{ else let }k:=1$ \AppliesAll
-				\While{$obj(x+k)<obj(x)$} \AppliesAll
-						\State$\textbf{let }x:=x+k\text{, }k:=2k$ \AppliesAll
-				\EndWhile \AppliesAll
-		\EndWhile \AppliesIPS\vspace{1mm}
+        \While{$\textbf{true}$} \AppliesIPS
+                \State$\textbf{if }obj(x-1)\geq obj(x)\textbf{ and }obj(x+1)\geq obj(x)\textbf{ return }x$ \AppliesAll
+                \State$\textbf{if }obj(x-1)<obj(x+1)\textbf{ then let }k:=-1\textbf{ else let }k:=1$ \AppliesAll
+                \While{$obj(x+k)<obj(x)$} \AppliesAll
+                        \State$\textbf{let }x:=x+k\text{, }k:=2k$ \AppliesAll
+                \EndWhile \AppliesAll
+        \EndWhile \AppliesIPS\vspace{1mm}
 
-		\State$\textbf{let }\ell:=\min(x-k/2,x+k)\text{, }r:=\max(x-k/2,x+k)$ \AppliesGSLS\vspace{1mm}
+        \State$\textbf{let }\ell:=\min(x-k/2,x+k)\text{, }r:=\max(x-k/2,x+k)$ \AppliesGSLS\vspace{1mm}
 
-		\While{$\ell<r$} \AppliesGS
-				\If{$obj(\lfloor(\ell+r)/2\rfloor)<obj(\lfloor(\ell+r)/2\rfloor+1)$} \AppliesGS
-						\State$r:=\lfloor(\ell+r)/2\rfloor$ \AppliesGS
-				\Else \AppliesGS
-						\State$\ell:=\lfloor(\ell+r)/2\rfloor+1$ \AppliesGS
-				\EndIf \AppliesGS
-		\EndWhile \AppliesGS\vspace{1mm}
+        \While{$\ell<r$} \AppliesGS
+                \If{$obj(\lfloor(\ell+r)/2\rfloor)<obj(\lfloor(\ell+r)/2\rfloor+1)$} \AppliesGS
+                        \State$r:=\lfloor(\ell+r)/2\rfloor$ \AppliesGS
+                \Else \AppliesGS
+                        \State$\ell:=\lfloor(\ell+r)/2\rfloor+1$ \AppliesGS
+                \EndIf \AppliesGS
+        \EndWhile \AppliesGS\vspace{1mm}
 
-		\State$\textbf{let }n:=\min\{n\mid F_{n}\geq r-l+2\}$ \AppliesLS
-		\While{$n>3$} \AppliesLS
-				\If{$\ell+F_{n-1}-1\leq r\textbf{ and }obj(\ell+F_{n-2}-1)\geq obj(\ell+F_{n-1}-1)$} \AppliesLS
-						\State$\textbf{let }\ell:=\ell+F_{n-2}$ \AppliesLS
-				\EndIf \AppliesLS
-				\State$\textbf{let }n:=n-1$ \AppliesLS
-		\EndWhile \AppliesLS\vspace{1mm}
+        \State$\textbf{let }n:=\min\{n\mid F_{n}\geq r-l+2\}$ \AppliesLS
+        \While{$n>3$} \AppliesLS
+                \If{$\ell+F_{n-1}-1\leq r\textbf{ and }obj(\ell+F_{n-2}-1)\geq obj(\ell+F_{n-1}-1)$} \AppliesLS
+                        \State$\textbf{let }\ell:=\ell+F_{n-2}$ \AppliesLS
+                \EndIf \AppliesLS
+                \State$\textbf{let }n:=n-1$ \AppliesLS
+        \EndWhile \AppliesLS\vspace{1mm}
 
-		\State$x:=\ell$ \AppliesGSLS
+        \State$x:=\ell$ \AppliesGSLS
 \end{algorithmic}
 \vspace{-1em}
 \pagerule
@@ -251,70 +251,70 @@ Bugs can occur as a result of errors when programming constants and settings fil
 
 \bibitem{Afshan2013}
 Afshan, S., McMinn, P., Stevenson, M.: Evolving readable string test inputs
-	using a natural language model to reduce human oracle cost. In: ICST (2013)
+    using a natural language model to reduce human oracle cost. In: ICST (2013)
 
 \bibitem{Arrieta2016}
 Arrieta, A., Wang, S., Sagardui, G., Etxeberria, L.: Test case prioritization
-	of configurable cyber-physical systems with weight-based search algorithms.
-	In: GECCO (2016)
+    of configurable cyber-physical systems with weight-based search algorithms.
+    In: GECCO (2016)
 
 \bibitem{Fraser2015b}
 Fraser, G., Arcuri, A., McMinn, P.: A memetic algorithm for whole test suite
-	generation. JSS  (2015)
+    generation. JSS  (2015)
 
 \bibitem{Fraser2013b}
 Fraser, G., Staats, M., McMinn, P., Arcuri, A., Padberg, F.: Does automated
-	white-box test generation really help software testers? In: ISSTA (2013)
+    white-box test generation really help software testers? In: ISSTA (2013)
 
 \bibitem{Harman2007}
 Harman, M., McMinn, P.: A theoretical and empirical analysis of evolutionary
-	testing and hill climbing for structural test data generation. In: ISSTA
-	(2007)
+    testing and hill climbing for structural test data generation. In: ISSTA
+    (2007)
 
 \bibitem{Harman2010}
 Harman, M., McMinn, P.: A theoretical and empirical study of search based
-	testing: Local, global and hybrid search. IEEE TSE  (2010)
+    testing: Local, global and hybrid search. IEEE TSE  (2010)
 
 \bibitem{Kapfhammer2013}
 Kapfhammer, G.M., McMinn, P., Wright, C.J.: Search-based testing of relational
-	schema integrity constraints across multiple database management systems. In:
-	ICST (2013)
+    schema integrity constraints across multiple database management systems. In:
+    ICST (2013)
 
 \bibitem{Kempka2015}
 Kempka, J., McMinn, P., Sudholt, D.: Design and analysis of different
-	alternating variable searches for search-based software testing. TCS  (2015)
+    alternating variable searches for search-based software testing. TCS  (2015)
 
 \bibitem{Korel1990}
 Korel, B.: Automated software test data generation. IEEE TSE  (1990)
 
 \bibitem{Lakhotia2010}
 Lakhotia, K., Tillmann, N., Harman, M., Halleux, J.: {FloPSy} --- search-based
-	floating point constraint solving for symbolic execution. In: ICTSS (2010)
+    floating point constraint solving for symbolic execution. In: ICTSS (2010)
 
 \bibitem{McMinn2015}
 McMinn, P., Wright, C.J., Kapfhammer, G.M.: The effectiveness of test coverage
-	criteria for relational database schema integrity constraints. ACM TOSEM
-	(2015)
+    criteria for relational database schema integrity constraints. ACM TOSEM
+    (2015)
 
 \bibitem{Pradhan2016}
 Pradhan, D., Wang, S., Ali, S., Yue, T.: Search-based cost-effective test case
-	selection for manual execution within time budget: An empirical study. In:
-	GECCO (2016)
+    selection for manual execution within time budget: An empirical study. In:
+    GECCO (2016)
 
 \bibitem{Qiu2016}
 Qiu, X., Ali, S., Yue, T., Zhang, L.: Reliability-redundancy-location
-	allocation with maximum reliability and minimum cost using search techniques.
-	IST  (2016)
+    allocation with maximum reliability and minimum cost using search techniques.
+    IST  (2016)
 
 \bibitem{Yue2014}
 Yue, T., Ali., S.: Applying search algorithms for optimizing stakeholders
-	familiarity and balancing workload in requirements assignment. In: GECCO
-	(2014)
+    familiarity and balancing workload in requirements assignment. In: GECCO
+    (2014)
 
 \bibitem{Yue2016}
 Yue, T., Ali, S., Lu, H., Nie., K.: Search-based decision ordering to
-	facilitate product line engineering of cyber-physical system. In: MODELSWARD
-	(2016)
+    facilitate product line engineering of cyber-physical system. In: MODELSWARD
+    (2016)
 
 \end{thebibliography}
 
