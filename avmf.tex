@@ -225,20 +225,17 @@ industrial practice and in the SBSE research community. \name's extensible objec
 implement many different search-based solutions to problems in the field of software engineering. Possible future
 applications of the AVM include the following:
 
-\inlineheading{Automatically Generating Readable Test Data}
-Generating readable test cases that humans can easily understand has been of interest to researchers in search-based testing of late (e.g., rewarding inputs that obtain a high score from a language model~\cite{Afshan2013}). More readable values were requested by participants of a recent study evaluating test generation tools~\cite{Fraser2013b}. Given that the AVM employs a local search, the technique could be used to start with examples of human generated inputs and adapt them to new coverage targets --- all without necessarily losing the qualities of the original data.
+\inlineheading{Automatically Generating Readable Test Data} Generating readable test cases that humans can easily understand recently has been of interest to researchers in search-based testing (e.g., rewarding inputs that obtain a high score from a language model~\cite{Afshan2013}). More readable values were requested by participants of a recent study evaluating test generation tools~\cite{Fraser2013b}. Given that the AVM employs a local search, it could start with examples of human-generated inputs and adapt them to new coverage targets --- all without necessarily losing the qualities of the original data.
 
-\inlineheading{Automatically Determining Optimal Software Configuration Values}
-Highly configurable software tools, such as the GCC compiler, may be tunable through the use of search-based techniques such as genetic algorithms or the AVM~\cite{Kukunas2010a}. In large search spaces of parameters, the AVM's exploratory move phase equips it to quickly discover which particular variables are relevant to the problem, while its phase of pattern moves allows it to determine the optimal values of parameters. Again, as a local search technique, the AVM is also well suited to taking an existing known-good human solution and improving upon it.
+\inlineheading{Automatically Determining Optimal Software Configuration Values} Highly configurable software tools, such as the GCC compiler, may be tunable through the use of search-based techniques such as genetic algorithms or the AVM~\cite{Kukunas2010a}. In large search spaces of parameters, the AVM's exploratory move phase equips it to quickly discover which particular variables are relevant to the problem, while its phase of pattern moves allows it to determine the optimal values of parameters. Again, as a local search technique, the AVM is also well suited to taking an existing known-good human solution and improving upon it.
 
-\inlineheading{Automated Bug-Fixing}
-Recent experiments reveal that real-world bugs can occur as a result of mistakes made when defining constant variables and setting values in configuration files~\cite{Zhong2015}. As such, the AVM could be used as a means to search for appropriate values that could potentially form the basis of a ``fix''. During its exploratory move phase the AVM could, by performing a quick sweep of small changes through the values involved and seeing how the resulting fitness values are affected, quickly determine which constants are relevant to the fix.
+\inlineheading{Automated Bug-Fixing} Recent experiments reveal that real-world bugs can occur as a result of mistakes made when defining constant variables and setting values in configuration files~\cite{Zhong2015}. As such, the AVM could be used as a means to search for appropriate values that could potentially form the basis of a ``fix''. During its exploratory move phase the AVM could, by performing a quick sweep of small changes through the values involved and seeing how the resulting fitness values are affected, quickly determine which constants are relevant to the fix.
 
 %% Commented out for double blind review
 %\inlineheading{Acknowledgment}
 %We thank Joseph Kempka for an initial implementation of Geometric and Lattice search that we used to test our own version against.
 
-% \vspace{-1em}
+\vspace{-1em}
 
 % References
 \bibliographystyle{splncs03}
