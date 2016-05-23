@@ -217,10 +217,16 @@ The following is the output of the search process, showing how the AVM search co
 \vspace{-1em}
 \label{sec:conclusions}
 
-This paper introduced \name, an open source implementation of the AVM and framework for its use in SBSE projects. Possible future applications of the AVM include the following:
+This paper introduced \name, an open-source implementation of the AVM and a framework supporting its use in SBSE
+projects.  \name supports supports cutting-edge data features of local search techniques, such as a representation for a
+wide variety of data types and the implementations of new variable search algorithms. Since a well-documented version of
+\name is now freely available for download at \repourl, we judge that it will advance the use of the AVM in both
+industrial practice and in the SBSE research community. \name's extensible object-oriented design will enable others to
+implement many different search-based solutions to problems in the field of software engineering. Possible future
+applications of the AVM include the following:
 
 \inlineheading{Automatically Generating Readable Test Data}
-Generating readable test cases that humans can easily understand has been of interest to researchers in search-based testing of late (e.g., rewarding inputs that obtain a high score from a language model~\cite{Afshan2013}). More readable values were requested by participants of a recent study evaluating test generation tools~\cite{Fraser2013b}. Given that the AVM is local search, the technique could be used to start with examples of human generated inputs and adapt them to new coverage targets without necessarily losing the qualities of the original data.
+Generating readable test cases that humans can easily understand has been of interest to researchers in search-based testing of late (e.g., rewarding inputs that obtain a high score from a language model~\cite{Afshan2013}). More readable values were requested by participants of a recent study evaluating test generation tools~\cite{Fraser2013b}. Given that the AVM employs a local search, the technique could be used to start with examples of human generated inputs and adapt them to new coverage targets --- all without necessarily losing the qualities of the original data.
 
 \inlineheading{Automatically Determining Optimal Software Configuration Values}
 Highly configurable software tools, such as the GCC compiler, may be tunable through the use of search-based techniques such as genetic algorithms or the AVM~\cite{Kukunas2010a}. In large search spaces of parameters, the AVM's exploratory move phase equips it to quickly discover which particular variables are relevant to the problem, while its phase of pattern moves allows it to determine the optimal values of parameters. Again, as a local search technique, the AVM is also well suited to taking an existing known-good human solution and improving upon it.
