@@ -22,17 +22,17 @@
 \newcommand{\inlineheading}[1]{\vspace{1mm} \noindent {\bf #1.}}
 \newcommand{\codescalefactor}{0.7}
 \newcommand{\snippet}[1]{
-        \vspace{-1ex}
-        \begin{center}
-                \scalebox{\codescalefactor}{
-                        \begin{tabular}{|l|}
-                        \hline
-                        \input{snippets/#1}
-                        \hline
-                        \end{tabular}
-                }
-        \end{center}
-        \vspace{-1ex}
+  \vspace{-1ex}
+  \begin{center}
+    \scalebox{\codescalefactor}{
+      \begin{tabular}{|l|}
+        \hline
+          \input{snippets/#1}
+        \hline
+      \end{tabular}
+    }
+  \end{center}
+  \vspace{-1ex}
 }
 \newcommand{\ips}{IPS}
 \newcommand{\gs}{GS}
@@ -231,16 +231,15 @@ This paper introduced \name, an open-source implementation of the AVM and a fram
 
 \inlineheading{Automated Bug-Fixing} Recent experiments reveal that real-world bugs can occur as a result of mistakes made when defining constant variables and setting values in configuration files~\cite{Zhong2015}. As such, the AVM could search for appropriate values that could potentially form the basis of a ``fix''. During its exploratory move phase the AVM could, by performing a quick sweep of small changes through the values involved and seeing how the resulting fitness values are affected, quickly determine which constants are relevant to the fix.
 
-%% Commented out for double blind review
-%\inlineheading{Acknowledgment}
-%We thank Joseph Kempka for an initial implementation of Geometric and Lattice search that we used to test our own version against.
+\vspace{1em}
+\inlineheading{Acknowledgment}
+We would like to thank Joseph Kempka and Dirk Sudholt for an initial implementation of Geometric and Lattice search that we used to test and validate \name against.
 
 \vspace{-1em}
 
 % References
 \bibliographystyle{splncs03}
 
-%% Uncomment and remove the following to regenerate the references
 \bibliography{refs}
 
 \end{document}
