@@ -49,30 +49,31 @@
 \begin{document}
 
 \title{\texorpdfstring{\name: An\:Open-Source\:Framework\:and\\$\!$Implementation\:of\:the\:Alternating\:Variable\:Method\vspace{-.5em}}{}}
-
-%\author{Phil McMinn\inst{1} \and Gregory M. Kapfhammer\inst{2} \and Dirk Sudholt\inst{1} \and Sonal Mahajan\inst{3} \and William G.J. Halfond\inst{3}}
-
-%\institute{University of Sheffield, UK \and Allegheny College, USA \and University of Southern California, USA}
-
-% aim: get author block to fit in this space (or less)
-\author{
-        Authors and institutions\\
-        suppressed for double-blind review
-        \vspace{-1em}
-}
-\institute{}
-
+\author{} % making own author block
+\institute{} % making own author block
 \maketitle
+
+% own author block
+\vspace{-1em}
+\begin{center}
+\begin{tabular}{c@{\hskip 3em}c}
+  Phil McMinn & Gregory M. Kapfhammer \\
+  {\small University of Sheffield, UK} & {\small Allegheny College, USA} \\
+\end{tabular}
+\end{center}
+\vspace{-1em}
+
+%% TODO get abstract and intro back into one page
 
 \begin{abstract}
 The {\it \AVM} (AVM) has been shown to be a particularly fast and effective local search technique for %SBSE.
 search-based software engineering.
 %, particularly test data generation.
 %
-Recent improvements to the AVM have generalized the types of representations it can optimize and have provably improved its runtime for certain types of objective function landscape. Until now, however, there has been no publicly-available code implementation of these algorithms. This paper introduces \name, an object-oriented Java framework that provides such an implementation. \name is ready for download and configuration for use in a wide variety of SBSE projects.\vspace{-1ex}
+Recent improvements to the AVM have generalized the types of representations it can optimize and have provably improved its runtime for certain types of objective function landscape. Until now, however, there has been no publicly-available code implementation of these algorithms. This paper introduces \name, an object-oriented Java framework that provides such an implementation. \name is ready for download from \repourl for configuration and use in a wide variety of SBSE projects.\vspace{-1ex}
 \end{abstract}
 
-\vspace{-1em}
+\vspace{-2em}
 \section{Introduction}
 \vspace{-1ex}
 The {\it \AVM} (AVM) is a local search method that was first proposed for an SBSE problem by Bogdan Korel in 1990~\cite{Korel1990}
@@ -95,7 +96,7 @@ as well as test case selection~\cite{Pradhan2016} and prioritization~\cite{Arrie
 
 Since the publication of Korel's original paper in 1990, the AVM algorithm has been extended and improved for problems in SBSE: it can now handle a wider range of variable types, including fixed-point numbers~\cite{Harman2007} and strings~\cite{McMinn2015}, and can it incorporate new strategies that are proven to speed up the search for certain common types of objective function landscape \cite{Kempka2015}.
 
-The AVM is therefore capable of handling a variety of search representations and locating solutions to SBSE problems in a very efficient manner. Nevertheless, to incorporate it into an SBSE project, an SBSE developer has previously had to understand the different variants of the algorithm and then produce a faithful implementation of it --- a potentially time-consuming and error prone task. To address this problem, we have developed \name, an open-source object-oriented framework that implements variants of the AVM and its representations, and is available for download and deployment in SBSE projects. \name~is fully documented and comes with a series of examples demonstrating its usage.
+The AVM is therefore capable of handling a variety of search representations and locating solutions to SBSE problems in a very efficient manner. Nevertheless, to incorporate it into an SBSE project, an SBSE developer has previously had to understand the different variants of the algorithm and then produce a faithful implementation of it --- a potentially time-consuming and error prone task. To address this problem, we have developed \name, an open-source object-oriented framework that implements variants of the AVM and its representations, and is available for download from \repourl for  deployment in SBSE projects. \name~is fully documented and comes with a series of examples demonstrating its usage.
 
 %This paper is organized as follows: first we introduce the basic form of the AVM, as originally proposed by Korel~\cite{Korel1990} (Section~\ref{sec:basic}). We then survey some of the improvements subsequently made (Section~\ref{sec:improvements}). Section~\ref{sec:avmf} then introduces \name, our AVM framework, describing how it is implemented and how it is intended to be used. Finally, Section~\ref{sec:conclusions} concludes with proposals as to future projects to which the framework could be applied.
 
