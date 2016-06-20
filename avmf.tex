@@ -21,22 +21,25 @@
 \newcommand{\AVM}{Alternating Variable Method\xspace}
 \newcommand{\longname}{AVM Framework\xspace}
 \newcommand{\name}{\mbox{AVM\hspace{-1pt}$f$}\xspace}
-\newcommand{\repourl}{\url{https://github.com/AVMf/avmf}\xspace}
+
+%\newcommand{\repourl}{\url{https://github.com/AVMf/avmf}\xspace}
+\newcommand{\repourl}{\url{http://avmframework.org}\xspace}
 \newcommand{\gitclone}{{\tt git clone https://github.com/AVMf/avmf.git}\xspace}
+
 \newcommand{\inlineheading}[1]{\vspace{1mm} \noindent {\bf #1.}}
 \newcommand{\codescalefactor}{0.7}
 \newcommand{\snippet}[1]{
-		\vspace{-.5em}
-		\begin{center}
-				\scalebox{\codescalefactor}{
-						\begin{tabular}{|l|}
-								\hline
-										\input{snippets/#1}
-								\hline
-						\end{tabular}
-				}
-		\end{center}
-		\vspace{-.5em}
+        \vspace{-.5em}
+        \begin{center}
+                \scalebox{\codescalefactor}{
+                        \begin{tabular}{|l|}
+                                \hline
+                                        \input{snippets/#1}
+                                \hline
+                        \end{tabular}
+                }
+        \end{center}
+        \vspace{-.5em}
 }
 \newcommand{\ips}{IPS}
 \newcommand{\gs}{GS}
@@ -61,8 +64,8 @@
 \vspace{-2em}
 \begin{center}
 \begin{tabular}{c@{\hskip 3em}c}
-		Phil McMinn & Gregory M. Kapfhammer \\
-		{\small University of Sheffield, UK} & {\small Allegheny College, USA} \\
+        Phil McMinn & Gregory M. Kapfhammer \\
+        {\small University of Sheffield, UK} & {\small Allegheny College, USA} \\
 \end{tabular}
 \end{center}
 \vspace{-2em}
@@ -143,35 +146,35 @@ When all variables in the vector have been considered, the AVM wraps back to the
 \pagerule
 
 \begin{algorithmic}[1]
-		\scriptsize
+        \scriptsize
 
-		\While{$\textbf{true}$} \AppliesIPS
-				\State$\textbf{if }obj(x-1)\geq obj(x)\textbf{ and }obj(x+1)\geq obj(x)\textbf{ return }x$ \AppliesAll
-				\State$\textbf{if }obj(x-1)<obj(x+1)\textbf{ then let }k:=-1\textbf{ else let }k:=1$ \AppliesAll
-				\While{$obj(x+k)<obj(x)$} \AppliesAll
-						\State$\textbf{let }x:=x+k\text{, }k:=2k$ \AppliesAll
-				\EndWhile \AppliesAll
-		\EndWhile \AppliesIPS\vspace{1mm}
+        \While{$\textbf{true}$} \AppliesIPS
+                \State$\textbf{if }obj(x-1)\geq obj(x)\textbf{ and }obj(x+1)\geq obj(x)\textbf{ return }x$ \AppliesAll
+                \State$\textbf{if }obj(x-1)<obj(x+1)\textbf{ then let }k:=-1\textbf{ else let }k:=1$ \AppliesAll
+                \While{$obj(x+k)<obj(x)$} \AppliesAll
+                        \State$\textbf{let }x:=x+k\text{, }k:=2k$ \AppliesAll
+                \EndWhile \AppliesAll
+        \EndWhile \AppliesIPS\vspace{1mm}
 
-		\State$\textbf{let }\ell:=\min(x-k/2,x+k)\text{, }r:=\max(x-k/2,x+k)$ \AppliesGSLS\vspace{1mm}
+        \State$\textbf{let }\ell:=\min(x-k/2,x+k)\text{, }r:=\max(x-k/2,x+k)$ \AppliesGSLS\vspace{1mm}
 
-		\While{$\ell<r$} \AppliesGS
-		\If{$obj(\lfloor(\ell+r)/2\rfloor)<obj(\lfloor(\ell+r)/2\rfloor+1)$} \AppliesGS
-				\State$r:=\lfloor(\ell+r)/2\rfloor$ \AppliesGS
-		\Else \AppliesGS
-				\State$\ell:=\lfloor(\ell+r)/2\rfloor+1$ \AppliesGS
-		\EndIf \AppliesGS
-		\EndWhile \AppliesGS\vspace{1mm}
+        \While{$\ell<r$} \AppliesGS
+        \If{$obj(\lfloor(\ell+r)/2\rfloor)<obj(\lfloor(\ell+r)/2\rfloor+1)$} \AppliesGS
+                \State$r:=\lfloor(\ell+r)/2\rfloor$ \AppliesGS
+        \Else \AppliesGS
+                \State$\ell:=\lfloor(\ell+r)/2\rfloor+1$ \AppliesGS
+        \EndIf \AppliesGS
+        \EndWhile \AppliesGS\vspace{1mm}
 
-		\State$\textbf{let }n:=\min\{n\mid F_{n}\geq r-l+2\}$ \AppliesLS
-		\While{$n>3$} \AppliesLS
-				\If{$\ell+F_{n-1}-1\leq r\textbf{ and }obj(\ell+F_{n-2}-1)\geq obj(\ell+F_{n-1}-1)$} \AppliesLS
-						\State$\textbf{let }\ell:=\ell+F_{n-2}$ \AppliesLS
-				\EndIf \AppliesLS
-				\State$\textbf{let }n:=n-1$ \AppliesLS
-		\EndWhile \AppliesLS\vspace{1mm}
+        \State$\textbf{let }n:=\min\{n\mid F_{n}\geq r-l+2\}$ \AppliesLS
+        \While{$n>3$} \AppliesLS
+                \If{$\ell+F_{n-1}-1\leq r\textbf{ and }obj(\ell+F_{n-2}-1)\geq obj(\ell+F_{n-1}-1)$} \AppliesLS
+                        \State$\textbf{let }\ell:=\ell+F_{n-2}$ \AppliesLS
+                \EndIf \AppliesLS
+                \State$\textbf{let }n:=n-1$ \AppliesLS
+        \EndWhile \AppliesLS\vspace{1mm}
 
-		\State$x:=\ell$ \AppliesGSLS
+        \State$x:=\ell$ \AppliesGSLS
 \end{algorithmic}
 \vspace{-1em}
 \pagerule
