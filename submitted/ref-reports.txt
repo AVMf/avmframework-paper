@@ -1,0 +1,85 @@
+Dear Phil McMinn,
+
+Thank you for submitting your paper to the 8th International Symposium on
+Search Based Software Engineering (SSBSE 2016).
+
+The review of the submissions to the short paper track is now complete.
+
+All submissions were reviewed by three members
+of the program committee, and an open electronic discussion
+was held for all papers.
+
+We are pleased to inform you that your paper entitled
+
+AVMf: An Open-Source Framework and Implementation of the Alternating Variable Method
+
+has been accepted for inclusion in the short paper track of SSBSE 2016.
+
+The reviews of your submission are enclosed. In your preparation of the final paper,
+please be sure to address all the comments from the reviewers.
+
+The camera ready copy of your paper is due by June 30th 2016.
+
+Please note the following:
+- Your paper must be de-anonymised for the camera-ready version.
+- Your paper must not exceed 6 pages and conform to the LNCS format (http://www.springer.com/lncs).
+
+You will receive a separate email containing detailed instructions
+about how to submit the camera ready and the copyright form.
+
+Please let us remind you that your paper acceptance implies that
+one of the paper's authors must register and present the paper at the conference.
+Further information about the registration will follow soon.
+
+Again, we congratulate you on the acceptance of your paper
+and we look forward to seeing you in Raleigh!
+
+Best Regards,
+Federica
+SSBSE2016 Program Co-Chair
+
+
+----------------------- REVIEW 1 ---------------------
+PAPER: 35
+TITLE: AVMf: An Open-Source Framework and Implementation of the Alternating Variable Method
+AUTHORS: Phil McMinn and Gregory Kapfhammer
+
+
+----------- Review -----------
+A limiting factor in both SBSE research and industrial use of SBSE techniques is the lack of available, mature tools that can be used to perform optimizations (such as test generation). The authors of this work have made available an open-source implementation of the AVM method, with many of the advancements made in this technique since its introduction. Their approach seems sound, and I - overall - recommend acceptance so that the SSBSE audience can be made aware of this tool.
+
+My main concern with this work is that the samples given for how to use it are all relatively simple. I do not know if it will see much use for something complex like, say, test generation without more guidance in how to extend it for that purpose. The authors mention several projects for potential future work. I hope that they actually build one or more of those so that their tool can be properly benchmarked and so more complex examples can be made available to the public.
+
+One note on accuracy - the authors claim that their framework is the first publicly available code implementation of AVM. This is technically true in the sense that this is the first general implementation. Implementations of AVM for test generation have been publicly available for some time, such as the AUSTIN framework for C programs and as part of EvoSuite for Java programs. The authors should cite the use of AVM in AUSTIN:
+[1] Lakhotia, Kiran, Mark Harman, and Hamilton Gross. "AUSTIN: A tool for search based software testing for the C language and its evaluation on deployed automotive systems." Search Based Software Engineering (SSBSE), 2010 Second International Symposium on. IEEE, 2010.
+APA
+[2] Lakhotia, Kiran, Mark Harman, and Hamilton Gross. "AUSTIN: An open source tool for search based software testing of C programs." Information and Software Technology 55.1 (2013): 112-125.
+
+
+----------------------- REVIEW 2 ---------------------
+PAPER: 35
+TITLE: AVMf: An Open-Source Framework and Implementation of the Alternating Variable Method
+AUTHORS: Phil McMinn and Gregory Kapfhammer
+
+
+----------- Review -----------
+Summary
+This paper presents an open source framework for various versions of Alternating Variable Method (AVM). The algorithm can be downloaded and can be used to solve a variety of SBSE problems.
+
+Points in Favor
++ The paper is written quite well and is easy to follow.
++ The claim that this is the only open source framework for AVM is true
++ The open source framework is indeed very useful for SBSE researchers.
+
+Point Against
+- The only negative point is that there is no much research contributions in the paper. However, still the paper presents a very interesting and useful piece of work.
+
+
+----------------------- REVIEW 3 ---------------------
+PAPER: 35
+TITLE: AVMf: An Open-Source Framework and Implementation of the Alternating Variable Method
+AUTHORS: Phil McMinn and Gregory Kapfhammer
+
+
+----------- Review -----------
+This paper presents AVMf, an open-source implementation of the Alternating Variable Method (AVM) and a framework supporting its use in SBSE projects. The paper is well written, surveys the original AVM, further variations and extensions of the method. The authors implemented in the Java framework AVMf both the AVM algorithm and the enhancements to the original version proposed by Korel. The papers illustrates the usage of the tool providing some code examples and proposing possible future applications of the tool.
