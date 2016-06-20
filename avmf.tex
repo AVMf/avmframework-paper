@@ -96,7 +96,7 @@ The {\it \AVM} (AVM) is a local search method that was first proposed for an SBS
 for generating \mbox{numerical} software test data.
 % The AVM is an adaptation of so-called direct search methods \cite{Gill1974,Glass1965} to the test data generation problem.
 % In particular, the AVM that did not make assumptions about the branching constraints of the program --- for example, their linearity and continuity.
-Despite the application of supposedly more robust, global search techniques to this problem (e.g., Genetic Algorithms), the AVM has stood the test of time. In 2007, Harman and McMinn~\cite{Harman2007} reported its effectiveness and efficiency for a series of C programs, and combined it with a GA to provide a ``best of'' Memetic Algorithm approach~\cite{Harman2010}. It has since been implemented into tools to generate test data for C programs (i.e., IGUANA~\cite{McMinn2007} and AUSTIN~\cite{Lakhotia2013}); used to generate test suites for Java programs with {\sc EvoSuite}~\cite{Fraser2013,Fraser2015b}; generate database data with the {\it SchemaAnalyst} tool~\cite{Kapfhammer2013,McMinn2015}; and combined with dynamic symbolic execution in Microsoft's Pex tool~\cite{Lakhotia2010}.
+Despite the application of supposedly more robust, global search techniques to this problem (e.g., Genetic Algorithms), the AVM has stood the test of time. In 2007, Harman and McMinn~\cite{Harman2007} reported its effectiveness and efficiency for a series of C programs, and combined it with a GA to provide a ``best of'' Memetic Algorithm approach~\cite{Harman2010}. It has since been implemented into tools to generate test data for C programs (i.e., IGUANA~\cite{McMinn2007} and AUSTIN~\cite{Lakhotia2013}); used to generate test suites for Java programs with {\sc EvoSuite}~\cite{Fraser2013,Fraser2015b}; generate database data with the {\it SchemaAnalyst} tool~\cite{Kapfhammer2013,McMinn2015}; and combined with dynamic symbolic execution in Microsoft's Pex tool~\cite{Lakhotia2010b}.
 The AVM has since found application to problems outside of test data generation, for example
 %% SEE EMAIL FROM SHAUKAT ALI (27/04/16) FOR MORE DETAILS OF THESE:
 %
@@ -266,115 +266,15 @@ Using \name, possible future applications of the AVM include the following:
 %We would like to thank Joseph Kempka and Dirk Sudholt for an initial implementation of Geometric and Lattice search that we used to test and validate \%name against.
 %
 %\normalsize
-%\vspace{-1em}
+
+\vspace{-1em}
 
 % References
-%\bibliographystyle{splncs03}
+\bibliographystyle{splncs03}
 
-%\bibliography{refs}
-
-\vspace{-1.5em}
-\begin{thebibliography}{10}
-\providecommand{\url}[1]{\texttt{#1}}
-\providecommand{\urlprefix}{URL }
-\vspace{-1em}
-\bibitem{Afshan2013}
-Afshan, S., McMinn, P., Stevenson, M.: Evolving readable string test inputs
-	using a natural language model to reduce human oracle cost. In: Proc. ICST (2013)
-
-\bibitem{Arrieta2016}
-Arrieta, A., Wang, S., Sagardui, G., Etxeberria, L.: Test case prioritization
-	of configurable cyber-physical systems with weight-based search algorithms.
-	In: Proc. GECCO (2016)
-
-\bibitem{Fraser2013}
-Fraser,\,G.,\,Arcuri,\,A.,\,McMinn,\,P.: Test suite generation with memetic algorithms. In: Proc. GECCO (2013)
-
-\bibitem{Fraser2015b}
-Fraser,\,G.,\,Arcuri,\,A.,\,McMinn,\,P.:\,A\,memetic\,algorithm\,for\,whole\,test\,suite\,generation.\,JSS\,(2015)
-
-\bibitem{Fraser2013b}
-Fraser, G., Staats, M., McMinn, P., Arcuri, A., Padberg, F.: Does automated
-	white-box test generation really help software testers? In: Proc. ISSTA (2013)
-
-\bibitem{Fraser2015}
-Fraser, G., Staats, M., McMinn, P., Arcuri, A., Padberg, F.: Does automated
-	unit test generation really help software testers? a controlled empirical
-	study. ACM TOSEM  (2015)
-
-\bibitem{Harman2007}
-Harman, M., McMinn, P.: A theoretical and empirical analysis of evolutionary
-	testing and hill climbing for structural test data generation. In: Proc. ISSTA
-	(2007)
-
-\bibitem{Harman2010}
-Harman, M., McMinn, P.: A theoretical and empirical study of search based
-	testing: Local, global and hybrid search. IEEE TSE  (2010)
-
-\bibitem{Kapfhammer2013}
-Kapfhammer, G.M., McMinn, P., Wright, C.J.: Search-based testing of relational
-	schema integrity constraints across multiple database management systems. In:
-	Proc. ICST (2013)
-
-\bibitem{Kempka2013}
-Kempka, J., McMinn, P., Sudholt, D.: A theoretical runtime and empirical
-	analysis of different alternating variable searches for search-based testing.
-	In: Proc. GECCO (2013)
-
-\bibitem{Kempka2015}
-Kempka, J., McMinn, P., Sudholt, D.: Design and analysis of different
-	alternating variable searches for search-based software testing. TCS  (2015)
-
-\bibitem{Korel1990}
-Korel, B.: Automated software test data generation. IEEE TSE  (1990)
-
-\bibitem{Kukunas2010a}
-Kukunas, J., Cupper, R.D., Kapfhammer, G.M.: A genetic algorithm to improve
-	{L}inux kernel performance on resource-constrained devices. In: Proc. GECCO (2010)
-
-\bibitem{Lakhotia2010}
-Lakhotia, K., Harman, M., Gross, H.: {AUSTIN: A} tool for search based software
-	testing for the {C} language and its evaluation on deployed automotive
-	systems. In: Proc. SSBSE (2010)
-
-\bibitem{Lakhotia2013}
-Lakhotia, K., Harman, M., Gross, H.: {AUSTIN: A}n open source tool for search
-	based software testing of {C} programs. IST  (2013)
-
-\bibitem{McMinn2007}
-McMinn, P.: {IGUANA:} {I}nput {G}eneration {U}sing {A}utomated {N}ovel
-	{A}lgorithms. a plug and play research tool. Tech. Rep. CS-07-14, Dept. Computer Science,
-	University of Sheffield, UK (2007)
-
-\bibitem{McMinn2015}
-McMinn, P., Wright, C.J., Kapfhammer, G.M.: The effectiveness of test coverage
-	criteria for relational database schema integrity constraints. ACM TOSEM
-	(2015)
-
-\bibitem{Pradhan2016}
-Pradhan, D., Wang, S., Ali, S., Yue, T.: Search-based cost-effective test case
-	selection for manual execution within time budget: An empirical study. In:
-	Proc. GECCO (2016)
-
-\bibitem{Qiu2016}
-Qiu, X., Ali, S., Yue, T., Zhang, L.: Reliability-redundancy-location
-	allocation with maximum reliability and minimum cost using search techniques.
-	IST  (2016)
-
-\bibitem{Yue2014}
-Yue, T., Ali., S.: Applying search algorithms for optimizing stakeholders
-	familiarity and balancing workload in requirements assignment. In: Proc. GECCO
-	(2014)
-
-\bibitem{Yue2016}
-Yue, T., Ali, S., Lu, H., Nie., K.: Search-based decision ordering to
-	facilitate product line engineering of cyber-physical system. In: Proc. MODELSWARD
-	(2016)
-
-\bibitem{Zhong2015}
-Zhong, H., Su, Z.: An empirical study on real bug fixes. In: Proc. ICSE (2015)
-
-\end{thebibliography}
+\bibliography{refs}
+% \bibitem{Fraser2015b}
+% Fraser,\,G.,\,Arcuri,\,A.,\,McMinn,\,P.:\,A\,memetic\,algorithm\,for\,whole\,test\,suite\,generation.\,JSS\,(2015)
 
 
 \end{document}
