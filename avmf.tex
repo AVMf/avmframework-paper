@@ -25,17 +25,17 @@
 \newcommand{\inlineheading}[1]{\vspace{1mm} \noindent {\bf #1.}}
 \newcommand{\codescalefactor}{0.7}
 \newcommand{\snippet}[1]{
-        \vspace{-.5em}
-        \begin{center}
-                \scalebox{\codescalefactor}{
-                        \begin{tabular}{|l|}
-                                \hline
-                                        \input{snippets/#1}
-                                \hline
-                        \end{tabular}
-                }
-        \end{center}
-        \vspace{-.5em}
+				\vspace{-.5em}
+				\begin{center}
+								\scalebox{\codescalefactor}{
+												\begin{tabular}{|l|}
+																\hline
+																				\input{snippets/#1}
+																\hline
+												\end{tabular}
+								}
+				\end{center}
+				\vspace{-.5em}
 }
 \newcommand{\ips}{IPS}
 \newcommand{\gs}{GS}
@@ -51,7 +51,7 @@
 
 \begin{document}
 
-\title{\texorpdfstring{\name: An\:Open-Source\:Framework\:and\\$\!$Implementation\:of\:the\:Alternating\:Variable\:Method\vspace{-.75em}}{}}
+\title{\texorpdfstring{\name: An\:Open-Source\:Framework\:and\\$\!$$\!$$\!$Implementation\:of\:the\:Alternating\:Variable\:Method\vspace{-.75em}}{}}
 \author{} % making own author block
 \institute{} % making own author block
 \maketitle
@@ -60,8 +60,8 @@
 \vspace{-2em}
 \begin{center}
 \begin{tabular}{c@{\hskip 3em}c}
-        Phil McMinn & Gregory M. Kapfhammer \\
-        {\small University of Sheffield, UK} & {\small Allegheny College, USA} \\
+				Phil McMinn & Gregory M. Kapfhammer \\
+				{\small University of Sheffield, UK} & {\small Allegheny College, USA} \\
 \end{tabular}
 \end{center}
 \vspace{-2em}
@@ -130,7 +130,7 @@ from \repourl for deployment in SBSE projects. It is fully documented and comes 
 this algorithm involves making an increase and decrease of $1$ to the value of the variable (lines 2--3), referred to as
 {\it exploratory moves}. If either exploratory move leads to an improvement in the objective value for the complete
 vector, a positive or negative ``direction'' is established for making further {\it pattern moves} (lines 4--6). Pattern
-moves of increasing size continue to be made while the objective value improves. When a pattern move does not improve on
+moves of increasing size continue to be made while the objective value improves. When a pattern move does not improve
 the objective value compared to the previous move, the search has likely overshot the optimum, due to a pattern move
 that was larger than the difference between the current value of $\vec{x}_i$ and the optimal value. When this occurs,
 IPS loops back to the exploratory move process to re-establish a new direction. If exploratory moves do not lead to an
@@ -142,35 +142,35 @@ When all variables in the vector have been considered, the AVM wraps back to the
 \pagerule
 
 \begin{algorithmic}[1]
-        \scriptsize
+				\scriptsize
 
-        \While{$\textbf{true}$} \AppliesIPS
-                \State$\textbf{if }obj(x-1)\geq obj(x)\textbf{ and }obj(x+1)\geq obj(x)\textbf{ return }x$ \AppliesAll
-                \State$\textbf{if }obj(x-1)<obj(x+1)\textbf{ then let }k:=-1\textbf{ else let }k:=1$ \AppliesAll
-                \While{$obj(x+k)<obj(x)$} \AppliesAll
-                        \State$\textbf{let }x:=x+k\text{, }k:=2k$ \AppliesAll
-                \EndWhile \AppliesAll
-        \EndWhile \AppliesIPS\vspace{1mm}
+				\While{$\textbf{true}$} \AppliesIPS
+								\State$\textbf{if }obj(x-1)\geq obj(x)\textbf{ and }obj(x+1)\geq obj(x)\textbf{ return }x$ \AppliesAll
+								\State$\textbf{if }obj(x-1)<obj(x+1)\textbf{ then let }k:=-1\textbf{ else let }k:=1$ \AppliesAll
+								\While{$obj(x+k)<obj(x)$} \AppliesAll
+												\State$\textbf{let }x:=x+k\text{, }k:=2k$ \AppliesAll
+								\EndWhile \AppliesAll
+				\EndWhile \AppliesIPS\vspace{1mm}
 
-        \State$\textbf{let }\ell:=\min(x-k/2,x+k)\text{, }r:=\max(x-k/2,x+k)$ \AppliesGSLS\vspace{1mm}
+				\State$\textbf{let }\ell:=\min(x-k/2,x+k)\text{, }r:=\max(x-k/2,x+k)$ \AppliesGSLS\vspace{1mm}
 
-        \While{$\ell<r$} \AppliesGS
-        \If{$obj(\lfloor(\ell+r)/2\rfloor)<obj(\lfloor(\ell+r)/2\rfloor+1)$} \AppliesGS
-                \State$r:=\lfloor(\ell+r)/2\rfloor$ \AppliesGS
-        \Else \AppliesGS
-                \State$\ell:=\lfloor(\ell+r)/2\rfloor+1$ \AppliesGS
-        \EndIf \AppliesGS
-        \EndWhile \AppliesGS\vspace{1mm}
+				\While{$\ell<r$} \AppliesGS
+				\If{$obj(\lfloor(\ell+r)/2\rfloor)<obj(\lfloor(\ell+r)/2\rfloor+1)$} \AppliesGS
+								\State$r:=\lfloor(\ell+r)/2\rfloor$ \AppliesGS
+				\Else \AppliesGS
+								\State$\ell:=\lfloor(\ell+r)/2\rfloor+1$ \AppliesGS
+				\EndIf \AppliesGS
+				\EndWhile \AppliesGS\vspace{1mm}
 
-        \State$\textbf{let }n:=\min\{n\mid F_{n}\geq r-l+2\}$ \AppliesLS
-        \While{$n>3$} \AppliesLS
-                \If{$\ell+F_{n-1}-1\leq r\textbf{ and }obj(\ell+F_{n-2}-1)\geq obj(\ell+F_{n-1}-1)$} \AppliesLS
-                        \State$\textbf{let }\ell:=\ell+F_{n-2}$ \AppliesLS
-                \EndIf \AppliesLS
-                \State$\textbf{let }n:=n-1$ \AppliesLS
-        \EndWhile \AppliesLS\vspace{1mm}
+				\State$\textbf{let }n:=\min\{n\mid F_{n}\geq r-l+2\}$ \AppliesLS
+				\While{$n>3$} \AppliesLS
+								\If{$\ell+F_{n-1}-1\leq r\textbf{ and }obj(\ell+F_{n-2}-1)\geq obj(\ell+F_{n-1}-1)$} \AppliesLS
+												\State$\textbf{let }\ell:=\ell+F_{n-2}$ \AppliesLS
+								\EndIf \AppliesLS
+								\State$\textbf{let }n:=n-1$ \AppliesLS
+				\EndWhile \AppliesLS\vspace{1mm}
 
-        \State$x:=\ell$ \AppliesGSLS
+				\State$x:=\ell$ \AppliesGSLS
 \end{algorithmic}
 \vspace{-1em}
 \pagerule
@@ -198,7 +198,7 @@ The \longname (\name) implements both the AVM algorithm and the subsequent enhan
 To enable its algorithms to be easily used in SBSE projects, \name provides a framework of Java classes, which we now describe in detail. Each aspect of the framework is practically demonstrated by the source code of a series of examples in the repository, which are introduced at the end of this section.
 
 \begin{sloppypar}
-\inlineheading{Configuring an AVM search} The primary class is the {\tt AVM} class in the root (i.e., {\tt org.avmframework}) package. In order to construct an {\tt AVM} instance, the developer must supply an instance of one of the variable search methods; {\tt IteratedPatternSearch}, {\tt GeometricSearch} or {\tt LatticeSearch}, which reside in the {\tt localsearch} package. The developer must also construct the {\tt AVM} instance using a {\tt TerminationPolicy} parameter, an object that decides when the AVM should terminate if a solution cannot found. Options include a maximum number of objective function evaluations, a maximum number of restarts, or a time limit. Finally, constructing the {\tt AVM} instance further requires two objects of type {\tt Initializer} that are used to initialize variable vector values at the start of the search and re-initialize them on a restart. Default values may be used that can be specified for each variable, or random values can be chosen (through instances of either {\tt DefaultInitializer} or {\tt RandomInitializer}, two classes that both reside in the {\tt initializer} package). To support the generation of random numbers, \name requires a {\tt RandomGenerator} from the {\tt org.apache.commons} library that provides an implementation of the Mersenne Twister algorithm.
+\inlineheading{Configuring an AVM search} The primary class is the {\tt AVM} class in the root (i.e., {\tt org.avmframework}) package. In order to construct an {\tt AVM} instance, the developer must supply an instance of one of the variable search methods; {\tt IteratedPatternSearch}, {\tt GeometricSearch} or {\tt LatticeSearch}, which reside in the {\tt localsearch} package. The developer must also construct the {\tt AVM} instance using a {\tt TerminationPolicy} parameter, an object that decides when the AVM should terminate if a solution cannot be found. Options include a maximum number of objective function evaluations, a maximum number of restarts, or a time limit. Finally, constructing the {\tt AVM} instance further requires two objects of type {\tt Initializer} that are used to initialize variable vector values at the start of the search and re-initialize them on a restart. Default values may be used that can be specified for each variable, or random values can be chosen (through instances of either {\tt DefaultInitializer} or {\tt RandomInitializer}, two classes that both reside in the {\tt initializer} package). To support the generation of random numbers, \name requires a {\tt RandomGenerator} from the {\tt org.apache.commons} library that provides an implementation of the Mersenne Twister algorithm.
 \end{sloppypar}
 
 \begin{sloppypar}
@@ -209,7 +209,7 @@ In order to initiate a search process, the {\tt search} method of the {\tt AVM} 
 \end{sloppypar}
 
 \begin{sloppypar}
-\inlineheading{Representation} In order to configure the search representation, an instance of the {\tt Vector} class (in the root package) must be created, and variables added to it through the {\tt addVariable} method, which accepts an instance of a {\tt Variable}. Since the {\tt Variable} class is abstract, an instance of one of its concrete subclasses must be provided (i.e., one of {\tt IntegerVariable}, {\tt FixedPointVariable}, {\tt CharacterVariable} or {\tt StringVariable}). Each variable must be constructed with information such as its minimum or maximum value (maximum length for strings), number of decimal places for fixed-point variables, and a ``default'' initial value in the search space (e.g., an empty string or a zero value). These values are used to initialize vector variables when the {\tt DefaultInitializer} is used to providing a starting point for the search, as previously described in this section.
+\inlineheading{Representation} In order to configure the search representation, an instance of the {\tt Vector} class (in the root package) must be created, and variables added to it through the {\tt addVariable} method, which accepts an instance of a {\tt Variable}. Since the {\tt Variable} class is abstract, an instance of one of its concrete subclasses must be provided (i.e., one of {\tt IntegerVariable}, {\tt FixedPointVariable}, {\tt CharacterVariable} or {\tt StringVariable}). Each variable must be constructed with information such as its minimum or maximum value (maximum length for strings), number of decimal places for fixed-point variables, and a ``default'' initial value in the search space (e.g., an empty string or a zero value). These values are used to initialize vector variables when the {\tt DefaultInitializer} is used to provide a starting point for the search, as previously described in this section.
 \end{sloppypar}
 
 % GMK NOTE: Was it correct to use the word "class" in the "whether one class ..." phrase? I picked "entity" instead.
