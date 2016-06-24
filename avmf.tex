@@ -137,14 +137,14 @@ from \repourl~for deployment in SBSE projects. It is fully documented and comes 
 ``Iterated Pattern Search'' (IPS)~\cite{Kempka2013,Kempka2015}, shown by lines 1--7 of Figure~\ref{fig:alg}. The initial part of
 this algorithm involves making an increase and decrease of $1$ to the value of the variable (lines 2--3), referred to as
 {\it exploratory moves}. If either exploratory move leads to an improvement in the objective value for the complete
-vector, a positive or negative ``direction'' is established for making further {\it pattern moves} (lines 4--6). Pattern
+vector, a positive or negative ``direction'' is established for making further {\it pattern moves\/} (lines 4--6). Pattern
 moves of increasing size continue to be made while the objective value improves. When a pattern move does not improve
 the objective value compared to the previous move, the search has likely overshot the optimum, due to a pattern move
 that was larger than the difference between the current value of $\vec{x}_i$ and the optimal value. When this occurs,
 IPS loops back to the exploratory move process to re-establish a new direction. If exploratory moves do not lead to an
 improvement in objective value, IPS terminates and hands back control to the main loop, thus leading to the consideration of the next variable in the vector.
 
-When all variables in the vector have been considered, the AVM wraps back to the first. When a cycle of all variables has completed without any improvement in the objective function, the AVM is lodged in a local optimum. At this point the search process can be restarted with a new (typically random) series of vector values. The AVM continues in this fashion until resources are exhausted (e.g., a maximum number of objective function evaluations or restarts have been expended, or a time limit has expired), or, the best outcome is attained --- the optimal target vector is discovered. (For simplicity, these different termination criteria are not included as part of the algorithm definitions in Figure~\ref{fig:alg}.)
+When all variables in the vector have been considered, the AVM wraps back to the first. When a cycle of all variables has completed without any improvement in the objective function, the AVM is lodged in a local optimum. At this point the search process can be restarted with a new (typically random) series of vector values. The AVM continues in this fashion until resources are exhausted (e.g., a maximum number of objective function evaluations or restarts have been expended, or a time limit has expired), or, the best outcome is attained --- the optimal target vector is discovered. (For simplicity, these different termination criteria are not included as part of the algorithm definition in Figure~\ref{fig:alg}.)
 
 \begin{figure}[t!]
 \pagerule
