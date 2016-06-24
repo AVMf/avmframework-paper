@@ -107,7 +107,9 @@ as well as test case selection~\cite{Pradhan2016} and prioritization~\cite{Arrie
 
 % TODO: JP's paper combining DSE into EvoSuite uses AVM as a solver
 
-Since Korel's original work, the AVM has been extended and improved for problems in SBSE: it can handle more variable types, including fixed-point numbers~\cite{Harman2007} and strings~\cite{Kapfhammer2013,McMinn2015}, and can leverage new strategies proven to speed up the search for certain common types of objective function landscape \cite{Kempka2013,Kempka2015}.
+Since Korel's original work, the AVM has been extended and improved for problems in SBSE: now it can handle more variable
+types, including fixed-point numbers~\cite{Harman2007} and strings~\cite{Kapfhammer2013,McMinn2015}, and can leverage
+new strategies proven to speed up the search for certain common types of objective function landscape~\cite{Kempka2013,Kempka2015}.
 
 The AVM is therefore capable of handling a variety of search representations and locating solutions to SBSE problems in a very efficient manner. Yet, to incorporate it into a project, a developer has previously had to understand the different variants of the algorithm and produce a faithful implementation, or, attempt to adapt the open-source of a less general version specifically written for test data generation (e.g., \cite{Lakhotia2013}). Either of these options represents a potentially time-consuming and error prone task. To address this, we have developed \name, a general, open-source object-oriented framework that
 %% In the JV when have more space: comment that the dev can choose between the variants based on running them for the problem in hand
