@@ -241,15 +241,16 @@ The {\tt objective} package also supplies the concrete {\tt NumericalObjectiveVa
 
 %``{\tt \AVM}''. The examples can be configured withat th a command line parameter to use IPS, Geometric or Lattice search as the local search method.
 
-Each example makes use of its own problem-specific fitness function, which forms part of its code definition. The following is taken from the {\tt Quadratic} class, where the constants {\tt A}, {\tt B} and {\tt C} correspond to the co-efficients of the equation (here, {\tt A}\,{\tt =}\,{\tt 4}, {\tt B}\,{\tt =}\,{\tt 10} and {\tt C}\,{\tt =}\,{\tt 6}). The function obtains the value of {\tt x} from the (single variable) vector, and computes the value of {\tt y}. The objective value is then assigned as the distance between {\tt y} and zero, since, intuitively, the closer the value of {\tt y} to zero, the closer the search is to finding one of the roots of the equation:
+Each example makes use of its own problem-specific fitness function, which forms part of its code definition. The following is taken from the {\tt Quadratic} class, where the constants {\tt A}, {\tt B} and {\tt C} correspond to the co-efficients of the equation (here, {\tt A}\,{\tt =}\,{\tt 4}, {\tt B}\,{\tt =}\,{\tt 10} and {\tt C}\,{\tt =}\,{\tt 6}). The function obtains the value of {\tt x} from the (single variable) vector, and computes the value of {\tt y}. The objective value is then assigned as the distance between {\tt y} and zero, since intuitively, the closer the value of {\tt y} to zero, the closer the search is to finding one of the roots of the equation:
 
 \snippet{objective-fn}
 
-The following shows the output of the search process and the discovery of one of the roots ($-1.5$). Re-running the search from different starting positions leads to the other root, $-1$, also being found.
+The following shows the output of the search process and the discovery of one of the equation's roots, $-1.5$. Re-running
+the search from different starting positions leads to the other root, $-1$, also being found.
 
 \snippet{search-output}
 
-As part of future work, we plan to extend the example set with case studies showing how the AVM is or can be applied to real SBSE problems, such as test data generation. These will be made available via the code repository.
+As part of future work, we plan to extend the example set with case studies showing how the AVM is being or can be applied to real SBSE problems, such as test data generation. These will be made available via the code repository.
 
 \vspace{-1.3em}
 \section{Conclusions and Future Work}
