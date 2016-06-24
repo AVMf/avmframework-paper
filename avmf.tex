@@ -132,7 +132,7 @@ from \repourl for deployment in SBSE projects. It is fully documented and comes 
 \section{The AVM and Recent Improvements to the Algorithm}
 % something about how the algorithm starts, randomly or with initial values?
 \vspace{-1em}
-\inlineheading{The Original AVM} The AVM optimizes a vector $\vec{x} = (x_1, \dots, x_{len})$ according to some objective function by taking each variable $\vec{x}_i, 0 \leq i \leq len$ of the vector in turn and subjecting it to an individual search process. The original AVM used a variable search process subsequently named
+\inlineheading{The Original AVM} The AVM optimizes a vector $\vec{x} = (x_1, \dots, x_{len})$ according to some objective function by taking each variable $\vec{x}_i, 1 \leq i \leq len$ of the vector in turn and subjecting it to an individual search process. The original AVM used a variable search process subsequently named
 % TODO: This would be a good place to cite the GECCO version of this paper, if space, as it was the first to name IPS
 ``Iterated Pattern Search'' (IPS)~\cite{Kempka2013,Kempka2015}, shown by lines 1--7 of Figure~\ref{fig:alg}. The initial part of
 this algorithm involves making an increase and decrease of $1$ to the value of the variable (lines 2--3), referred to as
@@ -186,7 +186,7 @@ When all variables in the vector have been considered, the AVM wraps back to the
 \caption{\label{fig:alg}IPS, LS, GS search algorithms for the AVM for a variable $x \in D$. $obj(x)$
 %denotes the problem-specific
 is the objective function, %which is
-computed for the complete vector $\vec{x}$ currently being optimized by the AVM, where $\vec{x}_i := x, 0 \leq i \leq len$. $F$ is the Fibonacci sequence starting from $F_0\,=\,0$. Each line is annotated to show the algorithm(s) to which it belongs.}
+computed for the complete vector $\vec{x}$ currently being optimized by the AVM, where $\vec{x}_i := x, 1 \leq i \leq len$. $F$ is the Fibonacci sequence starting from $F_0\,=\,0$. Each line is annotated to show the algorithm(s) to which it belongs.}
 \vspace{-1em}
 \end{figure}
 
