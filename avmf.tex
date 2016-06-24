@@ -219,7 +219,8 @@ In order to initiate a search process, the {\tt search} method of the {\tt AVM} 
 %We now describe these aspects in further detail.
 \end{sloppypar}
 
-\begin{sloppypar} \inlineheading{Representation} In order to configure the search representation, an instance of the {\tt Vector} class (in the root package) must be created, and variables added to it through the {\tt addVariable} method, which accepts an instance of a {\tt Variable}. Since the {\tt Variable} class is abstract, an instance of one of its concrete subclasses must be provided (i.e., one of {\tt IntegerVariable}, {\tt FixedPointVariable}, {\tt CharacterVariable} or {\tt StringVariable}). Each variable must be constructed with information such as its minimum or maximum value (maximum length for strings), number of decimal places for fixed-point variables, and a ``default'' initial value in the search space (e.g., an empty string or a zero value). These values are used to initialize vector variables when the {\tt DefaultInitializer} provides a starting point for the search, as previously described in this section. \end{sloppypar}
+\begin{sloppypar} \inlineheading{Representation} In order to configure the search representation, an instance of the {\tt Vector} class (in the root package) must be created, and variables added to it through the {\tt addVariable} method, which accepts an instance of a {\tt Variable}. Since the {\tt Variable} class is abstract, an instance of one of its concrete subclasses must be provided (i.e., one of {\tt IntegerVariable}, {\tt FixedPointVariable}, {\tt CharacterVariable} or {\tt StringVariable}). Each variable must be constructed with information such as its minimum or maximum value (maximum length for strings), number of decimal places for fixed-point variables, and a ``default'' initial value in the search space (e.g., an empty string or a zero value). These values are used to initialize vector variables when the {\tt DefaultInitializer} provides a starting point for the search, as previously described in this section.
+\end{sloppypar}
 
 % GMK NOTE: Was it correct to use the word "class" in the "whether one class ..." phrase? I picked "entity" instead.
 
@@ -228,14 +229,14 @@ In order to initiate a search process, the {\tt search} method of the {\tt AVM} 
 The {\tt objective} package also supplies the concrete {\tt NumericalObjectiveValue} class for returning higher-is-better or lower-is-better numerical objective values as needed.
 \end{sloppypar}
 
-\begin{sloppypar}
-\inlineheading{Reporting} The {\tt search} method of the {\tt AVM} class returns an instance of the {\tt Monitor} class, which can be used to find out interesting statistics regarding the search. These include the best vector found by the search, its objective value, the number of objective function evaluations that took place, the number of restarts that took place, and the amount of time that the search took (in milliseconds). The {\tt Monitor} class can also report the number of {\it unique} objective function evaluations. The objective function can make optional usage of a cache that maps previously ``seen'' vectors to objective values, avoiding the need to perform potentially costly re-evaluations.
 % (a feature that is turned on by default).
-%Using this cache helps make the search process more efficient by not repeating potentially expensive objective function evaluations for vectors that have already been considered during the search.
+%Using this cache helps make the search process more efficient by not repeating potentially expensive objective function
+%evaluations for vectors that have already been considered during the search.
+
+\begin{sloppypar} \inlineheading{Reporting} The {\tt search} method of the {\tt AVM} class returns an instance of the {\tt Monitor} class, which can be used to find out interesting statistics regarding the search. These include the best vector found by the search, its objective value, the number of objective function evaluations that took place, the number of restarts that happened and the amount of time that the search took (in milliseconds). The {\tt Monitor} class can also report the number of {\it unique\/} objective function evaluations. Employing the technique known as memoization, the objective function can make optional usage of a cache that maps previously observed vectors to objective values, avoiding the need to perform potentially costly re-evaluations.
 \end{sloppypar}
 
-\begin{sloppypar}
-\inlineheading{Examples} \name comes with a series of examples demonstrating its use. Instructions on how to compile and run these examples are available in the project's {\tt README.md} file located in the main directory of the code repository. The ``{\tt Quadratic}'' example demonstrates the use of the AVM to solve a quadratic equation by finding one of its roots. ``{\tt AllZeros}'' shows the optimization of an array of integers to zero values from arbitrary random values, while ``{\tt String}'' optimizes a string value from an initially random string to a specified target.
+\begin{sloppypar} \inlineheading{Examples} \name~comes with a series of examples demonstrating its use. Instructions on how to compile and run these examples are available in the project's {\tt README.md} file located in the main directory of the code repository. The ``{\tt Quadratic}'' example demonstrates the use of the AVM to solve a quadratic equation by finding one of its roots. ``{\tt AllZeros}'' shows the optimization of an array of integers to zero values from arbitrary random values, while ``{\tt String}'' optimizes a string value from an initially random string to a specified target.
 \end{sloppypar}
 
 %``{\tt \AVM}''. The examples can be configured withat th a command line parameter to use IPS, Geometric or Lattice search as the local search method.
