@@ -150,18 +150,49 @@ When all variables in the vector have been considered, the AVM wraps back to the
 \begin{figure}[t!]
 \pagerule
 
+%\begin{algorithmic}[1]
+%    \scriptsize
+%
+%    \While{$\textbf{true}$} \AppliesIPS
+%        \State$\textbf{if }obj(x-1)\geq obj(x)\textbf{ and }obj(x+1)\geq obj(x)\textbf{ return }x$ \AppliesAll
+%        \State$\textbf{if }obj(x-1)<obj(x+1)\textbf{ then let }k:=-1\textbf{ else let }k:=1$ \AppliesAll
+%        \While{$obj(x+k)<obj(x)$} \AppliesAll
+%            \State$\textbf{let }x:=x+k\text{, }k:=2k$ \AppliesAll
+%        \EndWhile \AppliesAll
+%    \EndWhile \AppliesIPS\vspace{1mm}
+%
+%    \State$\textbf{let }\ell:=\min(x-k/2,x+k)\text{, }r:=\max(x-k/2,x+k)$ \AppliesGSLS\vspace{1mm}
+%
+%    \While{$\ell<r$} \AppliesGS
+%    \If{$obj(\lfloor(\ell+r)/2\rfloor)<obj(\lfloor(\ell+r)/2\rfloor+1)$} \AppliesGS
+%        \State$r:=\lfloor(\ell+r)/2\rfloor$ \AppliesGS
+%    \Else \AppliesGS
+%        \State$\ell:=\lfloor(\ell+r)/2\rfloor+1$ \AppliesGS
+%    \EndIf \AppliesGS
+%    \EndWhile \AppliesGS\vspace{1mm}
+%
+%    \State$\textbf{let }n:=\min\{n\mid F_{n}\geq r-l+2\}$ \AppliesLS
+%    \While{$n>3$} \AppliesLS
+%        \If{$\ell+F_{n-1}-1\leq r\textbf{ and }obj(\ell+F_{n-2}-1)\geq obj(\ell+F_{n-1}-1)$} \AppliesLS
+%            \State$\textbf{let }\ell:=\ell+F_{n-2}$ \AppliesLS
+%        \EndIf \AppliesLS
+%        \State$\textbf{let }n:=n-1$ \AppliesLS
+%    \EndWhile \AppliesLS\vspace{1mm}
+%
+%    \State$x:=\ell$ \AppliesGSLS
+%\end{algorithmic}
 \begin{algorithmic}[1]
     \scriptsize
 
     \While{$\textbf{true}$} \AppliesIPS
-        \State$\textbf{if }obj(x-1)\geq obj(x)\textbf{ and }obj(x+1)\geq obj(x)\textbf{ return }x$ \AppliesAll
-        \State$\textbf{if }obj(x-1)<obj(x+1)\textbf{ then let }k:=-1\textbf{ else let }k:=1$ \AppliesAll
-        \While{$obj(x+k)<obj(x)$} \AppliesAll
-            \State$\textbf{let }x:=x+k\text{, }k:=2k$ \AppliesAll
+        \State$\textbf{if }obj(x_i-1)\geq obj(x_i)\textbf{ and }obj(x_i+1)\geq obj(x_i)\textbf{ return }x_i$ \AppliesAll
+        \State$\textbf{if }obj(x_i-1)<obj(x_i+1)\textbf{ then let }k:=-1\textbf{ else let }k:=1$ \AppliesAll
+        \While{$obj(x_i+k)<obj(x_i)$} \AppliesAll
+            \State$\textbf{let }x_i:=x_i+k\text{, }k:=2k$ \AppliesAll
         \EndWhile \AppliesAll
     \EndWhile \AppliesIPS\vspace{1mm}
 
-    \State$\textbf{let }\ell:=\min(x-k/2,x+k)\text{, }r:=\max(x-k/2,x+k)$ \AppliesGSLS\vspace{1mm}
+    \State$\textbf{let }\ell:=\min(x_i-k/2,x_i+k)\text{, }r:=\max_i(x_i-k/2,x_i+k)$ \AppliesGSLS\vspace{1mm}
 
     \While{$\ell<r$} \AppliesGS
     \If{$obj(\lfloor(\ell+r)/2\rfloor)<obj(\lfloor(\ell+r)/2\rfloor+1)$} \AppliesGS
@@ -179,7 +210,7 @@ When all variables in the vector have been considered, the AVM wraps back to the
         \State$\textbf{let }n:=n-1$ \AppliesLS
     \EndWhile \AppliesLS\vspace{1mm}
 
-    \State$x:=\ell$ \AppliesGSLS
+    \State$x_i:=\ell$ \AppliesGSLS
 \end{algorithmic}
 \vspace{-1em}
 \pagerule
@@ -192,11 +223,11 @@ When all variables in the vector have been considered, the AVM wraps back to the
 
 \caption{\label{fig:alg}IPS, LS, GS algorithms
 %for the AVM
-for a variable $x$. For ease of presentation
+for a variable $x_i$. For ease of presentation
 %, and without loss of generality,
-we assume $x \in \mathbb{Z}$.
-$obj(x)$
-denotes objective function computation for the overall vector $\vec{x}$ being optimized, where $x_i$ is assigned to the value of $x$. $F$ is the Fibonacci sequence starting from $F_0=0$. Each line is annotated to show the algorithm(s) to which it belongs.}
+we assume $x_i \in \mathbb{Z}$.
+$obj(v)$
+denotes objective function computation for the overall vector $\vec{x}$ with $v$ as the value of $x_i$. $F$ is the Fibonacci sequence starting from $F_0=0$. Each line is annotated to show the algorithm(s) to which it belongs.}
 \vspace{-1em}
 \end{figure}
 
