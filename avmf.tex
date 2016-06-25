@@ -89,17 +89,18 @@ such an implementation. \name~is available from \repourl~for configuration and u
 \vspace{-2.5em}
 \section{Introduction}
 \vspace{-1em}
+\begin{sloppypar}
 The {\it \AVM\/} (AVM) is a local search method that was first proposed for a search-based software engineering (SBSE) problem
-by Bogdan Korel in 1990~\cite{Korel1990}
+by \mbox{Bogdan Korel} in 1990~\cite{Korel1990}
 %as an adaptation of so-called ``direct'' search methods \cite{Gill1974,Glass1965}
 for generating \mbox{numerical} % software
 test data.
 % The AVM is an adaptation of so-called direct search methods \cite{Gill1974,Glass1965} to the test data generation problem.
 % In particular, the AVM that did not make assumptions about the branching constraints of the program --- for example, their linearity and continuity.
-Despite the application of, supposedly more robust, global search techniques to this problem (e.g., genetic algorithms),
+Despite the \mbox{application} of, supposedly more robust, global search techniques to this \mbox{problem} (e.g.,~\mbox{Genetic} Algorithms (GAs)),
 the AVM has stood the test of time. In 2007, Harman and McMinn~\cite{Harman2007} reported its effectiveness and
-efficiency for a series of C programs, and combined it with a Genetic Algorithm to provide a ``best of'' Memetic Algorithm
-approach~\cite{Harman2010}. It has since been implemented into tools to generate test data for C programs (e.g.,
+efficiency for a series of C~\mbox{programs}, and combined it with a GA to provide a ``best of'' Memetic \mbox{Algorithm}
+\mbox{approach}~\cite{Harman2010}. It has since been implemented into tools to generate test data for C programs (e.g.,
 IGUANA~\cite{McMinn2007} and AUSTIN~\cite{Lakhotia2010,Lakhotia2013});
 generate Java test suites
 %for Java programs
@@ -118,8 +119,8 @@ balancing workload in requirements assignment~\cite{Yue2014}, % T. Yue and S. Al
 solving reliability-redundancy-allocation problems~\cite{Qiu2016}, % Xiang Qiu, Shaukat Ali, Tao Yue, and Li Zhang, Reliability-Redundancy-Location Allocation with Maximum Reliability and Minimum Cost Using Search Techniques, Accepted for a publication in Information and Software Technology (IST) Journal, 2016
 %
 as well as test case selection~\cite{Pradhan2016} and prioritization~\cite{Arrieta2016}. % A. ARRIETA, S. WANG, G. SAGARDUI AND L. ETXEBERRIA. Test Case Prioritization of Configurable Cyber-Physical Systems with Weight-Based Search Algorithms. In Genetic and Evolutionary Computation Conference (GECCO)., 2016.
-
 % TODO: JP's paper combining DSE into EvoSuite uses AVM as a solver
+\end{sloppypar}
 
 Since Korel's original work, the AVM has been extended and improved for problems in SBSE: now it can handle more variable
 types, including fixed-point numbers~\cite{Harman2007} and strings~\cite{Kapfhammer2013,McMinn2015}, and can leverage
