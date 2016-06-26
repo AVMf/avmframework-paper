@@ -145,7 +145,7 @@ from \repourl~for deployment in SBSE projects. It is fully documented and comes 
 \inlineheading{The Original AVM} The AVM optimizes a vector $\vec{x} = (x_1, \dots, x_{len})$ according to some objective function by taking, in turn, each variable $x_i, 1 \leq i \leq len$ of the vector and subjecting it to an individual search process. The original AVM used a variable search process subsequently named
 % TODO: This would be a good place to cite the GECCO version of this paper, if space, as it was the first to name IPS
 ``Iterated Pattern Search'' (IPS)~\cite{Kempka2013,Kempka2015}, shown by lines 1--7 of Figure~\ref{fig:alg}.
-Here, we assume $x_i \in \mathbb{Z}$, although later we explain how more complex types may be handled by the approach.
+Here, we assume that $x_i \in \mathbb{Z}$, although later we explain how more complex types may also be handled by the approach.
 The initial part of
 the IPS algorithm involves making an increase and decrease of $1$ to the value of the variable (lines 2--3), referred to as
 {\it exploratory moves}. If an exploratory move leads to an improvement in the objective value,
