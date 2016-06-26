@@ -142,7 +142,7 @@ from \repourl~for deployment in SBSE projects. It is fully documented and comes 
 \section{The AVM and Recent Improvements to the Algorithm}
 % something about how the algorithm starts, randomly or with initial values?
 \vspace{-1em}
-\inlineheading{The Original AVM} The AVM optimizes a vector $\vec{x} = (x_1, \dots, x_{len})$ according to some objective function by taking each variable $x_i, 1 \leq i \leq len$ of the vector in turn and subjecting it to an individual search process. The original AVM used a variable search process subsequently named
+\inlineheading{The Original AVM} The AVM optimizes a vector $\vec{x} = (x_1, \dots, x_{len})$ according to some objective function by taking, in turn, each variable $x_i, 1 \leq i \leq len$ of the vector and subjecting it to an individual search process. The original AVM used a variable search process subsequently named
 % TODO: This would be a good place to cite the GECCO version of this paper, if space, as it was the first to name IPS
 ``Iterated Pattern Search'' (IPS)~\cite{Kempka2013,Kempka2015}, shown by lines 1--7 of Figure~\ref{fig:alg}.
 Here, we assume $x_i \in \mathbb{Z}$, although later we explain how more complex types may be handled by the approach.
