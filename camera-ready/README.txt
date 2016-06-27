@@ -1,0 +1,1 @@
+The zip file contains just avmf.tex and the snippets directory.

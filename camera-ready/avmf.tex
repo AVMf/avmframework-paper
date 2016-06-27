@@ -1,0 +1,437 @@
+\let\oldvec\vec % avoid ams math vector error
+\documentclass{llncs}
+\let\vec\oldvec % avoid ams math vector error
+
+% needed for algorithms
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amssymb}
+\usepackage{amsmath}
+% for algorithms
+\newcommand{\mf}{\mathit{mf}}
+
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{bookmark}
+\usepackage{xspace}
+
+\newcommand{\AVM}{Alternating Variable Method\xspace}
+\newcommand{\longname}{AVM Framework\xspace}
+\newcommand{\name}{\mbox{AVM\hspace{-1pt}$f$}\xspace}
+
+%\newcommand{\repourl}{\url{https://github.com/AVMf/avmf}\xspace}
+\newcommand{\repourl}{\url{http://avmframework.org}\xspace}
+\newcommand{\gitclone}{{\tt git clone https://github.com/AVMf/avmf.git}\xspace}
+
+\newcommand{\inlineheading}[1]{\vspace{1mm} \noindent {\bf #1.}}
+\newcommand{\codescalefactor}{0.7}
+\newcommand{\snippet}[1]{
+    \vspace{-.5em}
+    \begin{center}
+        \scalebox{\codescalefactor}{
+            \begin{tabular}{|l|}
+                \hline
+                    \input{snippets/#1}
+                \hline
+            \end{tabular}
+        }
+    \end{center}
+    \vspace{-.5em}
+}
+\newcommand{\ips}{IPS}
+\newcommand{\gs}{GS}
+\newcommand{\ls}{LS}
+
+\newcommand{\AppliesAll}{\Comment{$\{\textrm{\ips}, \textrm{\gs}, \textrm{\ls}\}$}}
+\newcommand{\AppliesIPS}{\Comment{$\{\textrm{\ips}\}$}}
+\newcommand{\AppliesGS}{\Comment{$\{\textrm{\gs}\}$}}
+\newcommand{\AppliesLS}{\Comment{$\{\textrm{\ls}\}$}}
+\newcommand{\AppliesGSLS}{\Comment{$\{\textrm{\gs}, \textrm{\ls}\}$}}
+
+\newcommand{\pagerule}{\noindent \rule{\textwidth}{.5pt}}
+
+\begin{document}
+
+\title{\texorpdfstring{\name: An\:Open-Source\:Framework\:and\\$\!$$\!$$\!$Implementation\:of\:the\:Alternating\:Variable\:Method\vspace{-.75em}}{}}
+\author{} % making own author block
+\institute{} % making own author block
+\maketitle
+
+% own author block
+\vspace{-2em}
+\begin{center}
+\begin{tabular}{c@{\hskip 3em}c}
+    Phil McMinn & Gregory M. Kapfhammer \\
+    {\small University of Sheffield, UK} & {\small Allegheny College, USA} \\
+\end{tabular}
+\end{center}
+\vspace{-2em}
+
+\begin{abstract}
+The Alternating Variable Method (AVM) has been shown to be a fast and effective local search technique for %SBSE.
+search-based software engineering.
+%, particularly test data generation.
+%
+Recent improvements to the AVM have generalized the
+%types of
+representations it can optimize and have provably reduced its running time.
+% for certain types of objective function landscape.
+However, until now, there has been no general, publicly-available
+implementation of the AVM
+incorporating
+all of these developments.
+We introduce \name, an object-oriented
+Java framework
+that provides
+such an implementation. \name~is available from \repourl~for configuration and use in a wide variety of projects.\vspace{-1ex}
+\end{abstract}
+
+\vspace{-2.5em}
+\section{Introduction}
+\vspace{-1em}
+
+  % Proposed by Bogdan Korel in 1990~\cite{Korel1990}, the {\it \AVM\/} (AVM) is a local search method first used in the field of search-based software engineering (SBSE)
+% %as an adaptation of so-called ``direct'' search methods \cite{Gill1974,Glass1965}
+% for generating \mbox{numerical} % software
+% test data.
+
+\begin{sloppypar}
+The Alternating Variable Method (AVM) is a local search method that was first applied to a search-based software engineering (SBSE) problem --- the automatic generation of numerical test data --- by Bogdan Korel in 1990~\cite{Korel1990}.
+% The AVM is an adaptation of so-called direct search methods \cite{Gill1974,Glass1965} to the test data generation problem.
+% In particular, the AVM that did not make assumptions about the branching constraints of the program --- for example, their linearity and continuity.
+Despite the \mbox{application} of, supposedly more robust, global search techniques to this \mbox{problem} (e.g.,~\mbox{Genetic} Algorithms (GAs)),
+the AVM has stood the test of time. In 2007, Harman and McMinn~\cite{Harman2007} reported its effectiveness and
+efficiency for a series of C~\mbox{programs}, and combined it with a GA to provide a ``best of'' Memetic \mbox{Algorithm}
+\mbox{approach}~\cite{Harman2010}. It has since been implemented into tools to generate test data for C programs (e.g.,
+IGUANA~\cite{McMinn2007} and AUSTIN~\cite{Lakhotia2010,Lakhotia2013});
+generate Java test suites
+%for Java programs
+with {\sc
+EvoSuite}~\cite{Fraser2013,Fraser2015b}; create relational database data with the {\it SchemaAnalyst\/} tool~\cite{Kapfhammer2013,McMinn2015}; and combined with dynamic symbolic execution in Microsoft's Pex tool~\cite{Lakhotia2010b}.
+The AVM has also found application to
+%problems outside of test data generation, for example
+additional problems, including
+%% SEE EMAIL FROM SHAUKAT ALI (27/04/16) FOR MORE DETAILS OF THESE:
+%
+decision ordering for %engineering
+software product lines~\cite{Yue2016}, % T. Yue, S. Ali, H. Lu and K. Nie. Search-based Decision Ordering to Facilitate Product Line Engineering of Cyber-Physical System In Internatonal Conference on Model-Driven Engineering and Software Development., 2016.
+%
+balancing workload in requirements assignment~\cite{Yue2014}, % T. Yue and S. Ali. Applying Search Algorithms for Optimizing Stakeholders Familiarity and Balancing Workload in Requirements Assignment In ACM Genetic and Evolutionary Computation Conference (GECCO). New York, USA: ACM, 2014.
+%
+solving reliability-redundancy-allocation problems~\cite{Qiu2016}, % Xiang Qiu, Shaukat Ali, Tao Yue, and Li Zhang, Reliability-Redundancy-Location Allocation with Maximum Reliability and Minimum Cost Using Search Techniques, Accepted for a publication in Information and Software Technology (IST) Journal, 2016
+%
+as well as test case selection~\cite{Pradhan2016} and test suite prioritization~\cite{Arrieta2016}. % A. ARRIETA, S. WANG, G. SAGARDUI AND L. ETXEBERRIA. Test Case Prioritization of Configurable Cyber-Physical Systems with Weight-Based Search Algorithms. In Genetic and Evolutionary Computation Conference (GECCO)., 2016.
+% TODO: JP's paper combining DSE into EvoSuite uses AVM as a solver
+\end{sloppypar}
+
+Since Korel's original work, the AVM has been extended and improved for problems in SBSE: now it can handle more variable
+types, including fixed-point numbers~\cite{Harman2007} and strings~\cite{Kapfhammer2013,McMinn2015}, and can leverage
+new strategies proven to speed up the search for certain common types of objective function landscape~\cite{Kempka2013,Kempka2015}.
+
+The AVM is therefore capable of handling a variety of search representations and locating solutions to SBSE problems in
+a very efficient manner. Yet, to incorporate it into a project, a developer has previously had to understand the
+different variants of the algorithm and produce a faithful implementation, or, attempt to adapt the open-source of a
+less general version specifically written for test data generation (e.g.,~\cite{Lakhotia2013}). Either of these options represents a potentially time-consuming and error prone task. To address this, we have developed \name, a general, open-source object-oriented framework that
+%% In the JV when have more space: comment that the dev can choose between the variants based on running them for the problem in hand
+implements different variants of the AVM and its representations in Java. \name~is available for download
+%% important: have the URL in the abstract. This wasn't in review version to try and preserve some double-blind anonymity, but did still appear later in the paper.
+from \repourl~for deployment in SBSE projects. It is fully documented and comes with a series of examples demonstrating its usage.
+
+%This paper is organized as follows: first we introduce the basic form of the AVM, as originally proposed by Korel~\cite{Korel1990} (Section~\ref{sec:basic}). We then survey some of the improvements subsequently made (Section~\ref{sec:improvements}). Section~\ref{sec:avmf} then introduces \name, our AVM framework, describing how it is implemented and how it is intended to be used. Finally, Section~\ref{sec:conclusions} concludes with proposals as to future projects to which the framework could be applied.
+
+% Before introducing \name, we briefly review the basic form of the AVM algorithm and recent extensions.
+
+\section{The AVM and Recent Improvements to the Algorithm}
+% something about how the algorithm starts, randomly or with initial values?
+\vspace{-1em}
+\inlineheading{The Original AVM} The AVM optimizes a vector $\vec{x} = (x_1, \dots, x_{len})$ according to some objective function by taking, in turn, each variable $x_i, 1 \leq i \leq len$ of the vector and subjecting it to an individual search process. The original AVM used a variable search process subsequently named
+% TODO: This would be a good place to cite the GECCO version of this paper, if space, as it was the first to name IPS
+``Iterated Pattern Search'' (IPS)~\cite{Kempka2013,Kempka2015}, shown by lines 1--7 of Figure~\ref{fig:alg}.
+Here, we assume that $x_i \in \mathbb{Z}$, although later we explain how more complex types may also be handled by the approach.
+The initial part of
+the IPS algorithm involves making an increase and decrease of $1$ to the value of the variable (lines 2--3), referred to as
+{\it exploratory moves}. If an exploratory move leads to an improvement in the objective value,
+%for the complete vector
+a positive or negative ``direction'' is established for making further {\it pattern moves\/} (lines 4--6). Pattern
+moves of increasing size continue to be made while the objective value improves. When a pattern move fails to improve
+upon the objective value, the search has likely overshot an optimum, due to a pattern move
+that was larger than the difference between the current value of $x_i$ and the optimal value. When this occurs,
+IPS loops back to the exploratory move process to re-establish a new direction. If exploratory moves do not lead to an
+improvement in objective value, IPS terminates and hands back control to the main loop, thus leading to the consideration of the next variable in the vector.
+
+When all variables in the vector have been considered, the AVM wraps back to the first. When a cycle of all variables has completed without any improvement in the objective function, the AVM is lodged in a local optimum. At this point the search process can be restarted with a new (typically random) series of vector values. The AVM continues in this fashion until resources are exhausted (e.g., a maximum number of objective function evaluations or restarts have been expended, or a time limit has expired), or, the best outcome is attained --- the optimal target vector is discovered. (For simplicity, these different termination criteria are not included as part of the algorithm definition in Figure~\ref{fig:alg}.)
+
+\begin{figure}[t!]
+\pagerule
+
+\begin{algorithmic}[1]
+    \scriptsize
+
+    \While{$\textbf{true}$} \AppliesIPS
+        \State$\textbf{if }obj(x-1)\geq obj(x)\textbf{ and }obj(x+1)\geq obj(x)\textbf{ return }x$ \AppliesAll
+        \State$\textbf{if }obj(x-1)<obj(x+1)\textbf{ then let }k:=-1\textbf{ else let }k:=1$ \AppliesAll
+        \While{$obj(x+k)<obj(x)$} \AppliesAll
+            \State$\textbf{let }x:=x+k\text{, }k:=2k$ \AppliesAll
+        \EndWhile \AppliesAll
+    \EndWhile \AppliesIPS\vspace{1mm}
+
+    \State$\textbf{let }\ell:=\min(x-k/2,x+k)\text{, }r:=\max(x-k/2,x+k)$ \AppliesGSLS\vspace{1mm}
+
+    \While{$\ell<r$} \AppliesGS
+    \If{$obj(\lfloor(\ell+r)/2\rfloor)<obj(\lfloor(\ell+r)/2\rfloor+1)$} \AppliesGS
+        \State$r:=\lfloor(\ell+r)/2\rfloor$ \AppliesGS
+    \Else \AppliesGS
+        \State$\ell:=\lfloor(\ell+r)/2\rfloor+1$ \AppliesGS
+    \EndIf \AppliesGS
+    \EndWhile \AppliesGS\vspace{1mm}
+
+    \State$\textbf{let }n:=\min\{n\mid F_{n}\geq r-l+2\}$ \AppliesLS
+    \While{$n>3$} \AppliesLS
+        \If{$\ell+F_{n-1}-1\leq r\textbf{ and }obj(\ell+F_{n-2}-1)\geq obj(\ell+F_{n-1}-1)$} \AppliesLS
+            \State$\textbf{let }\ell:=\ell+F_{n-2}$ \AppliesLS
+        \EndIf \AppliesLS
+        \State$\textbf{let }n:=n-1$ \AppliesLS
+    \EndWhile \AppliesLS\vspace{1mm}
+
+    \State$x:=\ell$ \AppliesGSLS
+\end{algorithmic}
+%\begin{algorithmic}[1]
+%    \scriptsize
+%
+%    \While{$\textbf{true}$} \AppliesIPS
+%        \State$\textbf{if }obj(x_i-1)\geq obj(x_i)\textbf{ and }obj(x_i+1)\geq obj(x_i)\textbf{ return }x_i$ \AppliesAll
+%        \State$\textbf{if }obj(x_i-1)<obj(x_i+1)\textbf{ then let }k:=-1\textbf{ else let }k:=1$ \AppliesAll
+%        \While{$obj(x_i+k)<obj(x_i)$} \AppliesAll
+%            \State$\textbf{let }x_i:=x_i+k\text{, }k:=2k$ \AppliesAll
+%        \EndWhile \AppliesAll
+%    \EndWhile \AppliesIPS\vspace{1mm}
+%
+%    \State$\textbf{let }\ell:=\min(x_i-k/2,x_i+k)\text{, }r:=\max_i(x_i-k/2,x_i+k)$ \AppliesGSLS\vspace{1mm}
+%
+%    \While{$\ell<r$} \AppliesGS
+%    \If{$obj(\lfloor(\ell+r)/2\rfloor)<obj(\lfloor(\ell+r)/2\rfloor+1)$} \AppliesGS
+%        \State$r:=\lfloor(\ell+r)/2\rfloor$ \AppliesGS
+%    \Else \AppliesGS
+%        \State$\ell:=\lfloor(\ell+r)/2\rfloor+1$ \AppliesGS
+%    \EndIf \AppliesGS
+%    \EndWhile \AppliesGS\vspace{1mm}
+%
+%    \State$\textbf{let }n:=\min\{n\mid F_{n}\geq r-l+2\}$ \AppliesLS
+%    \While{$n>3$} \AppliesLS
+%        \If{$\ell+F_{n-1}-1\leq r\textbf{ and }obj(\ell+F_{n-2}-1)\geq obj(\ell+F_{n-1}-1)$} \AppliesLS
+%            \State$\textbf{let }\ell:=\ell+F_{n-2}$ \AppliesLS
+%        \EndIf \AppliesLS
+%        \State$\textbf{let }n:=n-1$ \AppliesLS
+%    \EndWhile \AppliesLS\vspace{1mm}
+%
+%    \State$x_i:=\ell$ \AppliesGSLS
+%\end{algorithmic}
+\vspace{-1em}
+\pagerule
+\vspace{-1em}
+
+% TODO: Questions about this notation:
+% --> What is the meaning of the variable D? (The domain of the variable, yes, but not defined)
+% --> Why is the variable \vec{x}_i defined in the caption? It is never used here or in the algorithm.
+% --> If this aforementioned variable is needed, then is ic correctly defined?
+
+\caption{\label{fig:alg}IPS, LS, GS algorithms for a variable $x \in \mathbb{Z}$. The function $obj$ is equivalent to evaluating the objective function with a vector $\vec{x}$ with all components except $x_i$ set to constants and $x_i$ substituted by the free parameter $x$. $F$ is the Fibonacci sequence starting from $F_0=0$. Each line is annotated to show the algorithm(s) it is a part of.}
+\vspace{-1em}
+\end{figure}
+
+\inlineheading{New Variable Search Algorithms}
+Kempka et al.~\cite{Kempka2013,Kempka2015} proposed two new variable searches for the AVM, as shown in Figure~\ref{fig:alg}. Kempka et al.\ proved that these search techniques are more efficient than IPS for unimodal objective function landscapes. ``Geometric Search'' (GS) begins by performing exploratory moves followed by pattern moves like IPS. Unlike IPS, however, it does not iterate after overshooting the optimum. Instead it uses past moves to  ``bracket'' the upper and lower limits of the variable in which the optimum must lie, performing a binary search to finally locate it (lines 8--15 of Figure~\ref{fig:alg}). ``Lattice Search'' (LS) is a slightly faster alternative to GS where the unimodal assumption holds. LS converges on the optimum through moves that increase $x_i$ from the lower value of the bracket through the addition of Fibonacci numbers (lines 16--22).
+
+\inlineheading{New Representations} Korel only demonstrated the original AVM with integer variables~\cite{Korel1990}.  Harman and McMinn~\cite{Harman2007} extended this initial definition by allowing each variable to be specified with a set number of decimal places $p$, allowing fixed-point numbers to be handled. Exploratory moves correspond to the smallest possible increments and decrements of the variable (i.e., $\pm10^{-p}$). Strings may also now be handled by the approach~\cite{Kapfhammer2013,McMinn2015}. A string variable is essentially a sub-vector of the overall vector to be optimized. Their elements are characters that are individually manipulated by the local search routine. The length of this sub-vector is allowed to vary through a special sequence of moves that increase and decrease its size, supporting the optimization of variable-length strings.
+
+\vspace{-1em}
+\section{The \longname~(\name)}
+\vspace{-1em}
+\label{sec:avmf}
+
+The \longname~(\name) implements both the AVM algorithm and the subsequent enhancements to the original version proposed by Korel. The framework has been implemented with the aim of making the core algorithms as clear as possible, thereby closely matching the algorithmic definitions of Figure~\ref{fig:alg}, while still adhering to well-accepted principles of good object-oriented design. \name~is publicly available from \repourl~as a Git repository for inclusion in SBSE projects where the AVM may be the core search algorithm, or, a component of a more complex technique (e.g., a Memetic Algorithm) involving calls to algorithms in the framework. Or, the code can simply be lifted from the repository and adapted to a project as developers see fit.
+
+To enable its algorithms to be easily used in SBSE projects, \name~provides a framework of Java classes, which we now describe in detail. Each aspect of the framework is practically demonstrated by the source code of a series of examples in the repository, the simplest of which are introduced at the end of this section.
+
+\begin{sloppypar} \inlineheading{Configuring an AVM Search} The primary class is the {\tt AVM} class in the root (i.e., {\tt org.avmframework}) package. In order to construct an {\tt AVM} instance, the developer must supply an instance of one of the variable search methods --- {\tt IteratedPatternSearch}, {\tt GeometricSearch} or {\tt LatticeSearch} --- which reside in the {\tt localsearch} package. The developer must also construct the {\tt AVM} instance using a {\tt TerminationPolicy} parameter, an object that decides when the AVM should terminate if a solution cannot be found. Options include a maximum number of objective function evaluations, a maximum number of restarts, or a time limit. Finally, constructing the {\tt AVM} instance further requires two objects of type {\tt Initializer} that are used to initialize variable vector values at the start of the search and re-initialize them on a restart. Default values may be used that can be specified for each variable, or random values can be chosen (through instances of either {\tt DefaultInitializer} or {\tt RandomInitializer}, two classes that both reside in the {\tt initializer} package). To support the generation of random numbers, \name~requires a {\tt RandomGenerator} from the {\tt org.apache.commons} library that provides an implementation of the Mersenne Twister algorithm. \end{sloppypar}
+
+\begin{sloppypar}
+In order to initiate a search process, the {\tt search} method of the {\tt AVM} instance must be invoked with an instance of a {\tt Vector} class and an {\tt ObjectiveFunction}, respectively. The {\tt Vector} class describes the representation of the problem
+%to the AVM,
+(i.e., the types of variables in the vector to be optimized), while the {\tt ObjectiveFunction} class describes how instances of those vectors should be rewarded with objective values during the search.
+%We now describe these aspects in further detail.
+\end{sloppypar}
+
+\begin{sloppypar} \inlineheading{Representation} In order to configure the search representation, an instance of the {\tt Vector} class (in the root package) must be created, and variables added to it through the {\tt addVariable} method, which accepts an instance of a {\tt Variable}. Since the {\tt Variable} class is abstract, an instance of one of its concrete subclasses must be provided (i.e., one of {\tt IntegerVariable}, {\tt FixedPointVariable}, {\tt CharacterVariable} or {\tt StringVariable}). Each variable must be constructed with information such as its minimum or maximum value (maximum length for strings), number of decimal places for fixed-point variables, and a ``default'' initial value in the search space (e.g., an empty string or a zero value). These values are used to initialize vector variables when the {\tt DefaultInitializer} provides a starting point for the search, as previously described in this section.
+\end{sloppypar}
+
+% GMK NOTE: Was it correct to use the word "class" in the "whether one class ..." phrase? I picked "entity" instead.
+
+\begin{sloppypar} \inlineheading{Objective Function} In contrast to the rest of the framework, which requires configuring instances of existing classes, an objective function must be supplied to the search process by overriding the abstract {\tt ObjectiveFunction} of the {\tt objective} package. This involves providing an implementation of the {\tt computeObjectiveValue} method that takes a {\tt Vector} as a parameter and returns an instance of the abstract {\tt ObjectiveValue} class. Since the AVM only needs to know whether one entity has a ``better'' objective value than another, exact numerical values are not needed, and so this class requires the ``{\tt betterThan}'', ``{\tt worseThan}'' and ``{\tt sameAs}'' methods to be overridden.
+%This is useful for when a problem involves two objectives that must be optimized, but with some precedence (e.g., the classical ``approach level'' and ``branch distance'' components of the fitness function for structural test data generation \cite{}), avoiding the need for a normalization function to combine the values. % Arcuri, Poulding GECCO reference.
+The {\tt objective} package also supplies the concrete {\tt NumericalObjectiveValue} class for returning higher-is-better or lower-is-better numerical objective values as needed.
+\end{sloppypar}
+
+% (a feature that is turned on by default).
+%Using this cache helps make the search process more efficient by not repeating potentially expensive objective function
+%evaluations for vectors that have already been considered during the search.
+
+\begin{sloppypar} \inlineheading{Reporting} The {\tt search} method of the {\tt AVM} class returns an instance of the {\tt Monitor} class, which can be used to find out interesting statistics regarding the search. These include the best vector found by the search, its objective value, the number of objective function evaluations that took place, the number of restarts that happened and the amount of time that the search took (in milliseconds). The {\tt Monitor} class can also report the number of {\it unique\/} objective function evaluations. Employing the technique known as memoization, the objective function can make optional usage of a cache that maps previously observed vectors to objective values, avoiding the need to perform potentially costly re-evaluations.
+\end{sloppypar}
+
+\begin{sloppypar} \inlineheading{Examples} \name~comes with a series of examples demonstrating its use. Instructions on how to compile and run these examples are available in the project's {\tt README.md} file located in the main directory of the code repository. The ``{\tt Quadratic}'' example demonstrates the use of the AVM to solve a quadratic equation by finding one of its roots. ``{\tt AllZeros}'' shows the optimization of an array of integers to zero values from arbitrary random values, while ``{\tt String}'' optimizes a string value from an initially random string to a specified target.
+\end{sloppypar}
+
+%``{\tt \AVM}''. The examples can be configured withat th a command line parameter to use IPS, Geometric or Lattice search as the local search method.
+
+Each example makes use of its own problem-specific fitness function, which forms part of its code definition. The following is taken from the {\tt Quadratic} class, where the constants {\tt A}, {\tt B} and {\tt C} correspond to the co-efficients of the equation (here, {\tt A}\,{\tt =}\,{\tt 4}, {\tt B}\,{\tt =}\,{\tt 10} and {\tt C}\,{\tt =}\,{\tt 6}). The function obtains the value of {\tt x} from the (single variable) vector, and computes the value of {\tt y}. The objective value is then assigned as the distance between {\tt y} and zero, since intuitively, the closer the value of {\tt y} to zero, the closer the search is to finding one of the roots of the equation:
+
+\snippet{objective-fn}
+
+The following shows the output of the search process and the discovery of one of the equation's roots, $-1.5$. Re-running
+the search from different starting positions leads to the other root, $-1$, also being found.
+
+\snippet{search-output}
+
+As part of future work, we plan to extend the example set with case studies showing how the AVM is being or can be applied to real SBSE problems, such as test data generation. These will be made available via the code repository.
+
+\vspace{-1.3em}
+\section{Conclusions and Future Work}
+\vspace{-1em}
+\label{sec:conclusions}
+
+This paper introduced \name, an open-source implementation of the AVM and a framework supporting its use in SBSE projects.
+%% Cut for space, as repetitious
+%\name offers features associated with cutting-edge local search techniques, such as a representation for a wide variety of data types and the integration of new variable search algorithms. Since a well-documented version of \name is now freely available for download at \repourl,
+\name is capable of advancing the AVM in both industrial practice and in the SBSE research community.
+%% Cut for space, as repetitious
+%Moreover, \name's extensible object-oriented design will enable others to implement search-based solutions to many different problems in the field of software engineering.
+Using \name, possible future applications of the AVM include the following:
+
+\inlineheading{Automatically Generating Readable Test Data} Generating readable tests that humans can easily understand has been a recent interest of search-based testing researchers (e.g., rewarding inputs that obtain a high score from a language model~\cite{Afshan2013}). In a recent study evaluating test generation tools, participants also requested more readable values~\cite{Fraser2013b,Fraser2015}. Given that the AVM employs a local search, it could start with examples of human-generated inputs and adapt them to new coverage targets --- all without losing the qualities of the \mbox{original data}.
+
+% See also the work on "deep parameter optimization" -- Wu et al., GECCO 2015
+
+\inlineheading{Automatically Determining Optimal Software Configuration Values} Highly configurable software tools, such as the GCC compiler, may be tunable through the use of search-based techniques such as genetic algorithms or the AVM~\cite{Kukunas2010a}. In large search spaces of parameters, the AVM's exploratory move phase equips it to quickly discover which particular variables are relevant to the problem, while its phase of pattern moves allows it to determine the optimal values of parameters. Again, as a local search technique, the AVM is also well suited to taking an existing known-good human solution and improving upon it.
+
+\inlineheading{Automated Bug-Fixing} Recent experiments reveal that real-world bugs can occur as a result of mistakes made when defining constant variables and setting values in configuration files~\cite{Zhong2015}. As such, the AVM could search for appropriate values that could potentially form the basis of a ``fix''. During its exploratory move phase the AVM could, by performing a quick sweep of small changes through the values involved and seeing how the resulting fitness values are affected, quickly determine which constants are relevant to the fix.
+
+\vspace{-1em}
+
+\begin{thebibliography}{10}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+\vspace{-1em}
+
+\scriptsize
+
+\bibitem{Afshan2013}
+Afshan, S., McMinn, P., Stevenson, M.: Evolving readable string test inputs
+  using a natural language model to reduce human oracle cost. In: Proc. ICST
+  (2013)
+
+\bibitem{Arrieta2016}
+Arrieta, A., Wang, S., Sagardui, G., Etxeberria, L.: Test case prioritization
+  of configurable cyber-physical systems with weight-based search algorithms.
+  In: Proc. GECCO (2016)
+
+\bibitem{Fraser2013}
+Fraser, G., Arcuri, A., McMinn, P.:
+  Test\,suite\,generation\,with\,memetic\,algorithms. In: Proc. GECCO (2013)
+
+\bibitem{Fraser2015b}
+Fraser, G., Arcuri, A., McMinn, P.: A memetic algorithm for whole test suite
+  generation. JSS  (2015)
+
+\bibitem{Fraser2013b}
+Fraser, G., Staats, M., McMinn, P., Arcuri, A., Padberg, F.: Does automated
+  white-box test generation really help software testers? In: Proc. ISSTA
+  (2013)
+
+\bibitem{Fraser2015}
+Fraser, G., Staats, M., McMinn, P., Arcuri, A., Padberg, F.: Does automated
+  unit test generation really help software testers? a controlled empirical
+  study. ACM TOSEM  (2015)
+
+\bibitem{Harman2007}
+Harman, M., McMinn, P.: A theoretical and empirical analysis of evolutionary
+  testing and hill climbing for structural test data generation. In: Proc.
+  ISSTA (2007)
+
+\bibitem{Harman2010}
+Harman, M., McMinn, P.: A theoretical and empirical study of search based
+  testing: Local, global and hybrid search. IEEE TSE  (2010)
+
+\bibitem{Kapfhammer2013}
+Kapfhammer, G.M., McMinn, P., Wright, C.J.: Search-based testing of relational
+  schema integrity constraints across multiple database management systems. In:
+  Proc. ICST (2013)
+
+\bibitem{Kempka2013}
+Kempka, J., McMinn, P., Sudholt, D.: A theoretical runtime and empirical
+  analysis of different alternating variable searches for search-based testing.
+  In: Proc. GECCO (2013)
+
+\bibitem{Kempka2015}
+Kempka, J., McMinn, P., Sudholt, D.: Design and analysis of different
+  alternating variable searches for search-based software testing. TCS  (2015)
+
+\bibitem{Korel1990}
+Korel, B.: Automated software test data generation. IEEE TSE  (1990)
+
+\bibitem{Kukunas2010a}
+Kukunas, J., Cupper, R.D., Kapfhammer, G.M.: A genetic algorithm to improve
+  {L}inux kernel performance on resource-constrained devices. In: Proc. GECCO
+  (2010)
+
+\bibitem{Lakhotia2010}
+Lakhotia, K., Harman, M., Gross, H.: {AUSTIN: A} tool for search based software
+  testing for the {C} language and its evaluation on deployed automotive
+  systems. In: SSBSE (2010)
+
+\bibitem{Lakhotia2013}
+Lakhotia, K., Harman, M., Gross, H.: {AUSTIN: A}n open source tool for search
+  based software testing of {C} programs. IST  (2013)
+
+\bibitem{Lakhotia2010b}
+Lakhotia, K., Tillmann, N., Harman, M., Halleux, J.: {FloPSy} --- search-based
+  floating point constraint solving for symbolic execution. In: Proc. ICTSS
+  (2010)
+
+\bibitem{McMinn2007}
+McMinn, P.: {IGUANA:} {I}nput {G}eneration {U}sing {A}utomated {N}ovel
+  {A}lgorithms. a plug and play research tool. Tech. Rep. CS-07-14, Dept.
+  Computer Science, University of Sheffield, UK (2007)
+
+\bibitem{McMinn2015}
+McMinn, P., Wright, C.J., Kapfhammer, G.M.: The effectiveness of test coverage
+  criteria for relational database schema integrity constraints. ACM TOSEM
+  (2015)
+
+\bibitem{Pradhan2016}
+Pradhan, D., Wang, S., Ali, S., Yue, T.: Search-based cost-effective test case
+  selection for manual execution within time budget: An empirical study. In:
+  Proc. GECCO (2016)
+
+\bibitem{Qiu2016}
+Qiu, X., Ali, S., Yue, T., Zhang, L.: Reliability-redundancy-location
+  allocation with maximum reliability and minimum cost using search techniques.
+  IST  (2016)
+
+\bibitem{Yue2014}
+Yue, T., Ali., S.: Applying search algorithms for optimizing stakeholders
+  familiarity and balancing workload in requirements assignment. In: Proc.
+  GECCO (2014)
+
+\bibitem{Yue2016}
+Yue, T., Ali, S., Lu, H., Nie., K.: Search-based decision ordering to
+  facilitate product line engineering of cyber-physical system. In: Proc.
+  MODELSWARD (2016)
+
+\bibitem{Zhong2015}
+Zhong, H., Su, Z.: An empirical study on real bug fixes. In: Proc. ICSE (2015)
+
+\end{thebibliography}
+
+
+\end{document}
