@@ -8,17 +8,16 @@ by the organizers of the symposium and a wide variety of other packages that
 are normally standard with a modern LaTeX distribution such a TeXLive 2015.
 
 You are invited to use this repository as a means for learning more about
-preparing papers in the field of automated software testing and as a way to
-investigate the results and writing in our paper. If you find this repository
-useful, could we trouble you to star this repository and then acknowledge it in
-your own research efforts? If you would like to learn more about research in
-the field of testing database applications, then you can check out
+preparing papers in the field of search-based software engineering and as a way
+to investigate the results and writing in our paper. If you find this
+repository useful, could we trouble you to star this repository and then
+acknowledge it in your own research efforts? If you would like to learn more
+about research in the field of search-based software engineering, then you can
+check out
 [gkapfham/research-bibliography](https://github.com/gkapfham/research-bibliography)
-and
-[AVMf/avm-bibliography](https://github.com/AVMf/avm-bibliography).
-If you would like to download the tool used to conduct the experiments
-presented in this paper, then please visit the
-[AVMf/avmf](https://github.com/AVMf/avmf)
+and [AVMf/avm-bibliography](https://github.com/AVMf/avm-bibliography). If you
+would like to download the tool used to conduct the experiments presented in
+this paper, then please visit the [AVMf/avmf](https://github.com/AVMf/avmf)
 repository.
 
 Here is a reference for the paper:
