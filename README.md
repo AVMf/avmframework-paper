@@ -22,8 +22,8 @@ repository.
 
 Here is a reference for the paper:
 
-> AVMf: An Open-Source Framework and Implementation of the Alternating Variable Method
-> Phil McMinn and Gregory M. Kapfhammer
+> AVMf: An Open-Source Framework and Implementation of the Alternating Variable Method.
+> Phil McMinn and Gregory M. Kapfhammer.
 > International Symposium on Search-Based Software Engineering (SSBSE 2016)
 
 ## Installation Instructions
