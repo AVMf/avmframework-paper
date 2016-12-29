@@ -1,10 +1,10 @@
-# icsme2016-mrstudyrtool-paper
+# avmframework-paper
 
 This repository contains the LaTeX source code and additional resources for a
-research paper that was accepted for publication at the [32nd International
-Conference on Software Maintenance and Evolution](http://icsme2016.github.io/)
-(ICSME 2016). The source code of the paper uses the LaTeX style files provided
-by the organizers of the conference and a wide variety of other packages that
+research paper that was accepted for publication at the [8th International
+Symposium on Search Based Software Engineering](http://ssbse.org/2016/)
+(SSBSE 2016). The source code of the paper uses the LaTeX style files provided
+by the organizers of the symposium and a wide variety of other packages that
 are normally standard with a modern LaTeX distribution such a TeXLive 2015.
 
 You are invited to use this repository as a means for learning more about
@@ -15,10 +15,10 @@ your own research efforts? If you would like to learn more about research in
 the field of testing database applications, then you can check out
 [gkapfham/research-bibliography](https://github.com/gkapfham/research-bibliography)
 and
-[schemaanalyst/schemaanalyst-bibliography](https://github.com/schemaanalyst/schemaanalyst-bibliography).
+[AVMf/avm-bibliography](https://github.com/AVMf/avm-bibliography).
 If you would like to download the tool used to conduct the experiments
 presented in this paper, then please visit the
-[schemaanalyst/schemaanalyst](https://github.com/schemaanalyst/schemaanalyst)
+[AVMf/avmf](https://github.com/AVMf/avmf)
 repository.
 
 Here is a reference for the paper:
@@ -32,7 +32,7 @@ Here is a reference for the paper:
 You can type the following command if you want to clone this repository:
 
 ```shell
-git clone https://github.com/schemaanalyst/icsme2016-mrstudyrtool-paper.git
+git clone https://github.com/AVMf/avmframework-paper.git
 ```
 
 ## Compiling the Paper
@@ -40,11 +40,11 @@ git clone https://github.com/schemaanalyst/icsme2016-mrstudyrtool-paper.git
 If you want to compile the paper to a PDF, then you should type the following commands.
 
 ```shell
-cd icsme2016-mrstudyrtool-paper
-pdflatex icsme2016-mrstudyr.tex
-bibtex icsme2016-mrstudyr.aux
-pdflatex icsme2016-mrstudyr.tex
-pdflatex icsme2016-mrstudyr.tex
+cd avmframework-paper
+pdflatex avmf.tex
+bibtex avmf.aux
+pdflatex avmf.tex
+pdflatex avmf.tex
 ```
 
 Please note that this has been tested on an Ubuntu 16.04 workstation running a
